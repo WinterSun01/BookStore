@@ -1,0 +1,77 @@
+﻿@model BookStore.Models.Entities.Order
+@{
+    ViewData["Title"] = $"Заказ №@Model.Id";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="mb-4">Заказ №@Model.Id</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                Информация о заказе
+            </div>
+            <div class="card-body">
+                <p><strong>Дата:</strong> @Model.OrderDate.ToString("dd.MM.yyyy HH:mm")</p>
+                <p><strong>Пользователь:</strong> @Model.UserId</p>
+                <p><strong>Адрес доставки:</strong> @Model.ShippingAddress</p>
+                <p><strong>Способ оплаты:</strong> @Model.PaymentMethod</p>
+            </div>
+        </div>
+
+        <h5>Товары в заказе</h5>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Книга</th>
+                    <th>Автор</th>
+                    <th class="text-end">Цена</th>
+                    <th class="text-center">Кол-во</th>
+                    <th class="text-end">Сумма</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderItems)
+                {
+                    <tr>
+                        <td>@item.Book.Title</td>
+                        <td>@item.Book.Author?.FullName</td>
+                        <td class="text-end">@item.PricePerUnit.ToString("C0") ₽</td>
+                        <td class="text-center">@item.Quantity</td>
+                        <td class="text-end">@((item.Quantity * item.PricePerUnit).ToString("C0")) ₽</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <h4>Общая сумма</h4>
+                <h2 class="text-success">@Model.TotalAmount.ToString("C0") ₽</h2>
+
+                <hr />
+                <h5>
+                    Текущий статус:
+                    <span class="badge bg-@(Model.Status == "Paid" ? "success" : "warning")">@Model.Status</span>
+                </h5>
+
+                <!-- Быстрая смена статуса -->
+                <div class="mt-3">
+                    <form asp-action="ChangeStatus" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" name="status" value="Paid" class="btn btn-success">Оплачен</button>
+                    </form>
+                    <form asp-action="ChangeStatus" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" name="status" value="Shipped" class="btn btn-primary">Отправлен</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">← Назад к списку заказов</a>

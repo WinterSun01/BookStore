@@ -1,0 +1,55 @@
+﻿@model IEnumerable<BookStore.Models.Entities.Order>
+@{
+    ViewData["Title"] = "Мои заказы";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">📦 Мои заказы</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center py-5">
+            <h4>У вас пока нет заказов</h4>
+            <a asp-controller="Book" asp-action="Index" class="btn btn-primary btn-lg">Перейти в каталог</a>
+        </div>
+    }
+    else
+    {
+        @foreach (var order in Model)
+        {
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>Заказ №@order.Id</strong>
+                        от @order.OrderDate.ToString("dd.MM.yyyy HH:mm")
+                    </div>
+                    <span class="badge bg-@(order.Status == "Paid" ? "success" : "warning") fs-6">
+                        @order.Status
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h6>Состав заказа:</h6>
+                            <ul class="list-unstyled">
+                                @foreach (var item in order.OrderItems)
+                                {
+                                    <li class="mb-1">
+                                        • @item.Book.Title
+                                        <span class="text-muted">(@item.Quantity шт. × @item.PricePerUnit.ToString("C0") ₽)</span>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <h4 class="text-success mb-1">@order.TotalAmount.ToString("C0") ₽</h4>
+                            <p class="text-muted small mb-0">
+                                Доставка: @order.ShippingAddress
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

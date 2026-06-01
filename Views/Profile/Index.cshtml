@@ -1,0 +1,83 @@
+﻿@model BookStore.Models.UserProfileViewModel
+@{
+    ViewData["Title"] = "Личный кабинет";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">👤 Личный кабинет</h2>
+
+    <div class="row">
+        <!-- Личная информация -->
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h5>Личные данные</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.User != null)
+                    {
+                        <p><strong>ФИО:</strong> @Model.User.FullName</p>
+                        <p><strong>Email:</strong> @Model.User.Email</p>
+                        <p><strong>Телефон:</strong> @Model.User.PhoneNumber</p>
+                        @if (Model.User.BirthDate.HasValue)
+                        {
+                            <p><strong>Дата рождения:</strong> @Model.User.BirthDate.Value.ToString("dd.MM.yyyy")</p>
+                        }
+                    }
+
+                    <a asp-action="Edit" class="btn btn-primary w-100 mt-3">Редактировать профиль</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Статистика -->
+        <div class="col-lg-8">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <h5>Всего заказов</h5>
+                            <h2 class="text-primary">@ViewBag.TotalOrders</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <h5>Потрачено всего</h5>
+                            <h2 class="text-success">@ViewBag.TotalSpent.ToString("C0") ₽</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- История заказов -->
+            <h4 class="mb-3">📦 История заказов</h4>
+
+            @if (!Model.Orders.Any())
+            {
+                <div class="alert alert-info">
+                    У вас пока нет заказов.
+                    <a asp-controller="Book" asp-action="Index">Перейти в каталог</a>
+                </div>
+            }
+            else
+            {
+                @foreach (var order in Model.Orders)
+                {
+                    <div class="card mb-3">
+                        <div class="card-header d-flex justify-content-between">
+                            <span>Заказ №@order.Id от @order.OrderDate.ToString("dd.MM.yyyy")</span>
+                            <span class="badge bg-@(order.Status == "Paid" ? "success" : "warning")">@order.Status</span>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Сумма:</strong> @order.TotalAmount.ToString("C0") ₽</p>
+                            <a asp-controller="Profile" asp-action="OrderDetails" asp-route-id="@order.Id"
+                               class="btn btn-sm btn-outline-primary">Подробнее →</a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

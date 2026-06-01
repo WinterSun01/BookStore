@@ -1,0 +1,22 @@
+﻿@model List<BookStore.ViewComponents.BreadcrumbItem>
+
+@if (Model.Count > 1)
+{
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-light px-3 py-2 rounded">
+            @foreach (var item in Model)
+            {
+                @if (item.Url != null)
+                {
+                    <li class="breadcrumb-item">
+                        <a href="@item.Url">@item.Title</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="breadcrumb-item active" aria-current="page">@item.Title</li>
+                }
+            }
+        </ol>
+    </nav>
+}

@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Админ-панель";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">📊 Админ-панель BookStore</h1>
+
+    <!-- Статистика -->
+    <div class="row mb-5">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Книги</h5>
+                    <h2 class="display-6">@ViewBag.TotalBooks</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Авторы</h5>
+                    <h2 class="display-6">@ViewBag.TotalAuthors</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Категории</h5>
+                    <h2 class="display-6">@ViewBag.TotalCategories</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Издательства</h5>
+                    <h2 class="display-6">@ViewBag.TotalPublishers</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Быстрые действия -->
+    <h4 class="mb-3">Быстрые действия</h4>
+    <div class="row g-3">
+        <!-- Книги -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">📚 Книги</h5>
+                    <p class="card-text text-muted">Управление каталогом книг</p>
+                    <a asp-area="Admin" asp-controller="Book" asp-action="Index" class="btn btn-primary w-100">
+                        Перейти к книгам
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Авторы -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">👤 Авторы</h5>
+                    <p class="card-text text-muted">Управление авторами</p>
+                    <a asp-area="Admin" asp-controller="Author" asp-action="Index" class="btn btn-success w-100">
+                        Управление авторами
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Категории -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">📂 Категории</h5>
+                    <p class="card-text text-muted">Управление категориями</p>
+                    <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="btn btn-info w-100">
+                        Управление категориями
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Издательства -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">🏢 Издательства</h5>
+                    <p class="card-text text-muted">Управление издательствами</p>
+                    <a asp-area="Admin" asp-controller="Publisher" asp-action="Index" class="btn btn-warning w-100">
+                        Управление издательствами
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Заказы -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">📦 Заказы</h5>
+                    <p class="card-text text-muted">Управление всеми заказами</p>
+                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="btn btn-danger w-100">
+                        Перейти к заказам
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

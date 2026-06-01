@@ -1,0 +1,126 @@
+﻿@model IEnumerable<BookStore.Models.Entities.Book>
+@{
+    ViewData["Title"] = "Каталог книг";
+}
+
+<h2 class="mb-4">📚 Каталог книг</h2>
+
+<!-- Форма поиска и фильтров -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" name="searchTerm" value="@ViewBag.SearchTerm"
+                       class="form-control" placeholder="Поиск по названию, автору..." />
+            </div>
+            <div class="col-md-3">
+                <select name="categoryId" class="form-select">
+                    <option value="">Все категории</option>
+                    @foreach (var cat in ViewBag.Categories)
+                    {
+                        <option value="@cat.Id" selected="@(cat.Id == ViewBag.CategoryId)">@cat.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <input type="number" name="minPrice" value="@ViewBag.MinPrice"
+                       class="form-control" placeholder="Цена от" />
+            </div>
+            <div class="col-md-2">
+                <input type="number" name="maxPrice" value="@ViewBag.MaxPrice"
+                       class="form-control" placeholder="Цена до" />
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary w-100">Найти</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Результаты -->
+<div class="row">
+    @foreach (var book in Model)
+    {
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                @if (!string.IsNullOrEmpty(book.ImageUrl))
+                {
+                    <img src="@book.ImageUrl"
+                         class="card-img-top"
+                         style="height: 260px; object-fit: contain; background-color: #f8f9fa; padding: 10px;"
+                         alt="@book.Title">
+                }
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">@book.Title</h5>
+                    <p class="card-text text-muted">@book.Author?.FullName</p>
+                    <p class="text-success fw-bold">@book.Price.ToString("C0") ₽</p>
+                    <div class="mt-auto">
+                        <a asp-action="Details" asp-route-id="@book.Id" class="btn btn-outline-primary w-100 mb-2">Подробнее</a>
+                        <form asp-controller="Cart" asp-action="Add" method="post">
+                            <input type="hidden" name="bookId" value="@book.Id" />
+                            <button type="submit" class="btn btn-primary w-100">🛒 В корзину</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info text-center">
+        По вашему запросу ничего не найдено.
+    </div>
+}
+
+<!-- ==================== ПАГИНАЦИЯ ==================== -->
+@if (ViewBag.TotalPages > 1)
+{
+    <nav aria-label="Навигация по страницам" class="mt-4">
+        <ul class="pagination justify-content-center">
+
+            <!-- Кнопка "Назад" -->
+            <li class="page-item @(ViewBag.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-page="@(ViewBag.CurrentPage - 1)"
+                   asp-route-searchTerm="@ViewBag.SearchTerm"
+                   asp-route-categoryId="@ViewBag.CategoryId"
+                   asp-route-minPrice="@ViewBag.MinPrice"
+                   asp-route-maxPrice="@ViewBag.MaxPrice">
+                    ← Назад
+                </a>
+            </li>
+
+            <!-- Номера страниц -->
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@i"
+                       asp-route-searchTerm="@ViewBag.SearchTerm"
+                       asp-route-categoryId="@ViewBag.CategoryId"
+                       asp-route-minPrice="@ViewBag.MinPrice"
+                       asp-route-maxPrice="@ViewBag.MaxPrice">
+                        @i
+                    </a>
+                </li>
+            }
+
+            <!-- Кнопка "Вперёд" -->
+            <li class="page-item @(ViewBag.HasNextPage ? "" : "disabled")">
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-page="@(ViewBag.CurrentPage + 1)"
+                   asp-route-searchTerm="@ViewBag.SearchTerm"
+                   asp-route-categoryId="@ViewBag.CategoryId"
+                   asp-route-minPrice="@ViewBag.MinPrice"
+                   asp-route-maxPrice="@ViewBag.MaxPrice">
+                    Вперёд →
+                </a>
+            </li>
+        </ul>
+    </nav>
+}

@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Информация";
+}
+
+<div class="container mt-4 mb-5">
+    <h1 class="mb-4">Информация</h1>
+
+    <!-- О нас -->
+    <section id="about" class="mb-5">
+        <h3 class="mb-3">О нас</h3>
+        <p>
+            BookStore — это современный интернет-магазин книг, работающий с 2020 года.
+            Мы предлагаем более 50 000 наименований книг от ведущих российских и зарубежных издательств.
+        </p>
+        <p>
+            Наша миссия — сделать качественную литературу доступной каждому читателю.
+            Мы тщательно отбираем ассортимент и работаем только с проверенными поставщиками.
+        </p>
+    </section>
+
+    <!-- Доставка и оплата -->
+    <section id="delivery" class="mb-5">
+        <h3 class="mb-3">Доставка и оплата</h3>
+        <p><strong>Доставка:</strong> по всей России 1–3 рабочих дня. Бесплатно при заказе от 2000 ₽.</p>
+        <p><strong>Оплата:</strong> банковской картой онлайн, наличными при получении, СБП.</p>
+        <p>Возможен самовывоз из пунктов выдачи в Москве и Санкт-Петербурге.</p>
+    </section>
+
+    <!-- Возврат и обмен -->
+    <section id="return" class="mb-5">
+        <h3 class="mb-3">Возврат и обмен</h3>
+        <p>Вы можете вернуть или обменять книгу в течение 30 дней с момента получения, если она не была повреждена и сохранён товарный вид.</p>
+        <p>Для возврата свяжитесь с нашей службой поддержки по телефону или email.</p>
+    </section>
+
+    <!-- Часто задаваемые вопросы -->
+    <section id="faq">
+        <h3 class="mb-3">Часто задаваемые вопросы</h3>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                        Как быстро приходит заказ?
+                    </button>
+                </h2>
+                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Обычно заказ приходит за 1–3 рабочих дня в зависимости от региона.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                        Можно ли заказать книгу, которой нет в наличии?
+                    </button>
+                </h2>
+                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Да, вы можете оставить предзаказ. Мы уведомим вас, когда книга появится.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,62 @@
+﻿@model BookStore.Models.Entities.Book
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Обложка -->
+        <div class="col-md-4 text-center">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" class="img-fluid rounded shadow" style="max-height: 450px; object-fit: contain;" alt="@Model.Title" />
+            }
+            else
+            {
+                <div class="border rounded p-5 text-center bg-light" style="height: 400px; display: flex; align-items: center; justify-content: center;">
+                    <h4 class="text-muted">Нет изображения</h4>
+                </div>
+            }
+        </div>
+
+        <!-- Информация о книге -->
+        <div class="col-md-8">
+            <h1 class="mb-3">@Model.Title</h1>
+
+            <p class="lead">
+                <strong>Автор:</strong> @Model.Author?.FullName
+            </p>
+            <p>
+                <strong>Категория:</strong> @Model.Category?.Name<br />
+                <strong>Издательство:</strong> @Model.Publisher?.Name
+            </p>
+
+            <h3 class="text-success mb-4">@Model.Price.ToString("C0") ₽</h3>
+
+            <div class="mb-4">
+                <strong>На складе:</strong> @Model.Stock шт.
+            </div>
+
+            <!-- Кнопки действий -->
+            <div class="d-flex gap-3 mb-5">
+                <form asp-controller="Cart" asp-action="Add" method="post">
+                    <input type="hidden" name="bookId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        🛒 Добавить в корзину
+                    </button>
+                </form>
+
+                <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                    Перейти в корзину
+                </a>
+            </div>
+
+            <h5>Описание книги</h5>
+            <p class="lead">@Model.Description</p>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <a asp-action="Index" class="btn btn-secondary">← Вернуться в каталог</a>
+    </div>
+</div>

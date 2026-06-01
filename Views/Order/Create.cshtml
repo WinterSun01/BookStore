@@ -1,0 +1,42 @@
+﻿@model BookStore.Models.Entities.Order
+@{
+    ViewData["Title"] = "Оформление заказа";
+}
+
+<h2 class="mb-4">Оформление заказа</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" method="post">
+            <div class="mb-3">
+                <label class="form-label">Адрес доставки</label>
+                <textarea asp-for="ShippingAddress" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Способ оплаты (имитация)</label>
+                <select class="form-select" asp-for="PaymentMethod">
+                    <option value="Card">Банковская карта</option>
+                    <option value="Cash">Наличными при получении</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg">Подтвердить заказ</button>
+            <a asp-controller="Cart" asp-action="Index" class="btn btn-secondary btn-lg">Назад в корзину</a>
+        </form>
+    </div>
+
+    <!-- Состав заказа -->
+    <div class="col-md-4">
+        <h5>Ваш заказ</h5>
+        @foreach (var item in ViewBag.CartItems)
+        {
+            <div class="border p-2 mb-2">
+                <strong>@item.Book.Title</strong><br />
+                @item.Quantity шт. × @item.Book.Price.ToString("C0") ₽
+            </div>
+        }
+        <hr />
+        <h4 class="text-success">Итого: @ViewBag.Total.ToString("C0") ₽</h4>
+    </div>
+</div>

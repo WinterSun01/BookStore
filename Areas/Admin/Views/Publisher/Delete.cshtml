@@ -1,0 +1,32 @@
+﻿@model BookStore.Models.Entities.Publisher
+
+@{
+    ViewData["Title"] = "Удалить издательство";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="mb-4 text-danger">🗑️ Удалить издательство</h2>
+
+<div class="alert alert-warning">
+    <strong>Внимание!</strong> Вы уверены, что хотите удалить это издательство?
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5>@Model.Name</h5>
+        @if (!string.IsNullOrEmpty(Model.Country))
+        {
+            <p class="text-muted">Страна: @Model.Country</p>
+        }
+
+        <form asp-action="Delete" method="post" class="mt-4">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Да, удалить
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>

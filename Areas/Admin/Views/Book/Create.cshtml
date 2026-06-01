@@ -1,0 +1,246 @@
+﻿@model BookStore.Models.ViewModels.BookViewModel
+@{
+    ViewData["Title"] = "Добавить новую книгу";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="mb-4">+ Добавить новую книгу</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data" class="row g-3">
+    <div class="col-md-8">
+        <!-- Название -->
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <!-- Описание -->
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <!-- Цена и Количество -->
+        <div class="row">
+            <div class="col-md-6">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Stock" class="form-label"></label>
+                <input asp-for="Stock" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Обложка книги -->
+        <div class="mb-3">
+            <label class="form-label">Обложка книги</label>
+            @if (Model != null && !string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div class="mb-2">
+                    <img src="@Model.ImageUrl" width="120" class="border rounded" />
+                    <div class="form-text">Текущая обложка</div>
+                </div>
+            }
+            <input type="file" asp-for="ImageFile" class="form-control" accept="image/*" />
+            <small class="text-muted">Загрузите изображение обложки (jpg, png, webp)</small>
+        </div>
+
+        <!-- Выпадающие списки -->
+        <div class="row">
+            <!-- Автор -->
+            <div class="col-md-4">
+                <label asp-for="AuthorId" class="form-label d-flex justify-content-between">
+                    <span>Автор</span>
+                    <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2"
+                            data-bs-toggle="modal" data-bs-target="#addAuthorModal">
+                        +
+                    </button>
+                </label>
+                <select asp-for="AuthorId" class="form-select" asp-items="ViewBag.Authors" id="AuthorId">
+                    <option value="">Выберите автора...</option>
+                </select>
+            </div>
+
+            <!-- Категория -->
+            <div class="col-md-4">
+                <label asp-for="CategoryId" class="form-label d-flex justify-content-between">
+                    <span>Категория</span>
+                    <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2"
+                            data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                        +
+                    </button>
+                </label>
+                <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.Categories" id="CategoryId">
+                    <option value="">Выберите категорию...</option>
+                </select>
+            </div>
+
+            <!-- Издательство -->
+            <div class="col-md-4">
+                <label asp-for="PublisherId" class="form-label d-flex justify-content-between">
+                    <span>Издательство</span>
+                    <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2"
+                            data-bs-toggle="modal" data-bs-target="#addPublisherModal">
+                        +
+                    </button>
+                </label>
+                <select asp-for="PublisherId" class="form-select" asp-items="ViewBag.Publishers" id="PublisherId">
+                    <option value="">Выберите издательство...</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Кнопки -->
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success">Сохранить книгу</button>
+            <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+        </div>
+    </div>
+</form>
+
+<!-- ==================== МОДАЛЬНЫЕ ОКНА (ВЫНЕСЕНЫ НАРУЖУ ФОРМЫ) ==================== -->
+<!-- Модальное окно: Добавить автора -->
+<div class="modal fade" id="addAuthorModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавить нового автора</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">ФИО автора</label>
+                    <input type="text" id="newAuthorName" class="form-control" placeholder="Например: Лев Толстой" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary" onclick="addNewAuthor()">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно: Добавить категорию -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавить новую категорию</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Название категории</label>
+                    <input type="text" id="newCategoryName" class="form-control" placeholder="Например: Фантастика" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary" onclick="addNewCategory()">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно: Добавить издательство -->
+<div class="modal fade" id="addPublisherModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавить новое издательство</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Название издательства</label>
+                    <input type="text" id="newPublisherName" class="form-control" placeholder="Например: Эксмо" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary" onclick="addNewPublisher()">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        async function addNewAuthor() {
+            const name = document.getElementById('newAuthorName').value.trim();
+            if (!name) { alert('Введите имя автора'); return; }
+
+            const response = await fetch('/Admin/Book/AddAuthor', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fullName: name })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const select = document.getElementById('AuthorId');
+                const option = new Option(data.fullName, data.id);
+                select.add(option);
+                select.value = data.id;
+
+                bootstrap.Modal.getInstance(document.getElementById('addAuthorModal')).hide();
+                document.getElementById('newAuthorName').value = '';
+            } else {
+                alert('Ошибка при добавлении автора');
+            }
+        }
+
+        async function addNewCategory() {
+            const name = document.getElementById('newCategoryName').value.trim();
+            if (!name) { alert('Введите название категории'); return; }
+
+            const response = await fetch('/Admin/Book/AddCategory', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: name })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const select = document.getElementById('CategoryId');
+                const option = new Option(data.name, data.id);
+                select.add(option);
+                select.value = data.id;
+
+                bootstrap.Modal.getInstance(document.getElementById('addCategoryModal')).hide();
+                document.getElementById('newCategoryName').value = '';
+            } else {
+                alert('Ошибка при добавлении категории');
+            }
+        }
+
+        async function addNewPublisher() {
+            const name = document.getElementById('newPublisherName').value.trim();
+            if (!name) { alert('Введите название издательства'); return; }
+
+            const response = await fetch('/Admin/Book/AddPublisher', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: name })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const select = document.getElementById('PublisherId');
+                const option = new Option(data.name, data.id);
+                select.add(option);
+                select.value = data.id;
+
+                bootstrap.Modal.getInstance(document.getElementById('addPublisherModal')).hide();
+                document.getElementById('newPublisherName').value = '';
+            } else {
+                alert('Ошибка при добавлении издательства');
+            }
+        }
+    </script>
+}

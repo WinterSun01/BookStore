@@ -1,0 +1,25 @@
+﻿@model BookStore.Models.Entities.Category
+
+@{
+    ViewData["Title"] = "Удалить категорию";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="mb-4 text-danger">🗑️ Удалить категорию</h2>
+
+<div class="alert alert-warning">
+    Вы уверены, что хотите удалить эту категорию?
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5>@Model.Name</h5>
+        <p>@Model.Description</p>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">Да, удалить</button>
+            <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+﻿@model IEnumerable<BookStore.Models.Entities.ShoppingCartItem>
+@{
+    ViewData["Title"] = "Корзина - BookStore";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">🛒 Ваша корзина</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center py-5">
+            <h4>Ваша корзина пуста</h4>
+            <p>Добавьте книги из каталога, чтобы начать покупки.</p>
+            <a asp-controller="Book" asp-action="Index" class="btn btn-primary btn-lg">
+                Перейти в каталог
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <!-- Список товаров -->
+            <div class="col-lg-8">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Книга</th>
+                            <th>Автор</th>
+                            <th class="text-end">Цена</th>
+                            <th class="text-center">Количество</th>
+                            <th class="text-end">Сумма</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@item.Book.Title</strong>
+                                </td>
+                                <td>@item.Book.Author?.FullName</td>
+                                <td class="text-end">@item.Book.Price.ToString("C0") ₽</td>
+                                <td class="text-center" style="width: 160px;">
+                                    <form asp-action="UpdateQuantity" method="post" class="d-flex align-items-center justify-content-center">
+                                        <input type="hidden" name="bookId" value="@item.BookId" />
+                                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown(); this.form.submit();">
+                                            -
+                                        </button>
+                                        <input type="number" name="quantity" value="@item.Quantity"
+                                               class="form-control form-control-sm mx-2 text-center" style="width: 70px;" min="1" />
+                                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp(); this.form.submit();">
+                                            +
+                                        </button>
+                                    </form>
+                                </td>
+                                <td class="text-end fw-bold">@((item.Quantity * item.Book.Price).ToString("C0")) ₽</td>
+                                <td class="text-center">
+                                    <form asp-action="Remove" method="post">
+                                        <input type="hidden" name="bookId" value="@item.BookId" />
+                                        <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Итого -->
+            <div class="col-lg-4">
+                <div class="card sticky-top" style="top: 20px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Итого к оплате</h5>
+                        <h3 class="text-success mb-4">@ViewBag.Total.ToString("C0") ₽</h3>
+
+                        <a asp-controller="Order" asp-action="Create" class="btn btn-success btn-lg w-100 mb-3">
+                            Оформить заказ
+                        </a>
+
+                        <form asp-action="Clear" method="post">
+                            <button type="submit" class="btn btn-outline-danger w-100">
+                                Очистить корзину
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -64,7 +64,7 @@
                     <div class="card-body d-flex flex-column">
                         <h6 class="card-title">@book.Title</h6>
                         <p class="card-text text-muted small">@book.Author?.FullName</p>
-                        <p class="mt-auto text-success fw-bold">@book.Price.ToString("C0") ₽</p>
+                        <p class="mt-auto text-success fw-bold">@book.Price.ToString("#,0") ₽</p>
                         <a asp-controller="Book" asp-action="Details" asp-route-id="@book.Id"
                            class="btn btn-outline-primary btn-sm mt-2">Подробнее</a>
                     </div>

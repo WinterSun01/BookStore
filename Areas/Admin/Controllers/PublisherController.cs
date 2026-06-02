@@ -29,6 +29,15 @@ namespace BookStore.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var exists = await _context.Publishers
+                    .AnyAsync(p => p.Name.ToLower() == publisher.Name.ToLower());
+
+                if (exists)
+                {
+                    ModelState.AddModelError("Name", "Такое издательство уже существует");
+                    return View(publisher);
+                }
+
                 _context.Publishers.Add(publisher);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Издательство успешно добавлено";

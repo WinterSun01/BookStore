@@ -1,11 +1,11 @@
-﻿@model BookStore.Models.Entities.Category
+﻿@model BookStore.Models.Entities.Author
 
 @{
-    ViewData["Title"] = "Редактировать категорию";
+    ViewData["Title"] = "Редактировать автора";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2 class="mb-4">✏️ Редактировать категорию</h2>
+<h2 class="mb-4">✏️ Редактировать автора</h2>
 
 <div class="card shadow-sm">
     <div class="card-body">
@@ -14,18 +14,21 @@
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
             <div class="mb-3">
-                <label asp-for="Name" class="form-label">Название</label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="FullName" class="form-label">ФИО автора</label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
 
             <div class="mb-4">
-                <label asp-for="Description" class="form-label">Описание</label>
-                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                <label asp-for="Biography" class="form-label">Биография</label>
+                <textarea asp-for="Biography" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Biography" class="text-danger"></span>
             </div>
 
             <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> Сохранить изменения
+                </button>
                 <a asp-action="Index" class="btn btn-secondary">Отмена</a>
             </div>
         </form>

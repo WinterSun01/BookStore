@@ -23,14 +23,35 @@ namespace BookStore.Areas.Admin.Controllers
         }
 
         // GET: /Admin/Book
-        public async Task<IActionResult> Index()
+        // GET: /Admin/Book
+        public async Task<IActionResult> Index(string? searchTerm)
         {
-            // Загружаем книги вместе с автором и категорией
-            var books = await _context.Books
+            var booksQuery = _context.Books
                 .Include(b => b.Author)
                 .Include(b => b.Category)
                 .Include(b => b.Publisher)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower().Trim();
+
+                booksQuery = booksQuery.Where(b =>
+                    // По названию книги — поиск по любому слову
+                    (b.Title != null && b.Title.ToLower().Contains(searchTerm)) ||
+
+                    // По автору, издательству и категории — поиск с начала слова
+                    (b.Author != null && b.Author.FullName.ToLower().StartsWith(searchTerm)) ||
+                    (b.Publisher != null && b.Publisher.Name.ToLower().StartsWith(searchTerm)) ||
+                    (b.Category != null && b.Category.Name.ToLower().StartsWith(searchTerm))
+                );
+            }
+
+            var books = await booksQuery
+                .OrderByDescending(b => b.CreatedAt)
                 .ToListAsync();
+
+            ViewBag.SearchTerm = searchTerm;
 
             return View(books);
         }

@@ -38,6 +38,16 @@ namespace BookStore.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Проверка на дубликат
+                var exists = await _context.Authors
+                    .AnyAsync(a => a.FullName.ToLower() == author.FullName.ToLower());
+
+                if (exists)
+                {
+                    ModelState.AddModelError("FullName", "Автор с таким именем уже существует");
+                    return View(author);
+                }
+
                 _context.Authors.Add(author);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Автор успешно добавлен";

@@ -1,25 +1,33 @@
-﻿@model BookStore.Models.Entities.Category
+﻿@model BookStore.Models.Entities.Author
 
 @{
-    ViewData["Title"] = "Удалить категорию";
+    ViewData["Title"] = "Удалить автор";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2 class="mb-4 text-danger">🗑️ Удалить категорию</h2>
+<h2 class="mb-4 text-danger">🗑️ Удалить автора</h2>
 
 <div class="alert alert-warning">
-    Вы уверены, что хотите удалить эту категорию?
+    <strong>Внимание!</strong> Вы уверены, что хотите удалить этого автора?
 </div>
 
-<div class="card">
+<div class="card shadow-sm">
     <div class="card-body">
-        <h5>@Model.Name</h5>
-        <p>@Model.Description</p>
+        <h5>@Model.FullName</h5>
 
-        <form asp-action="Delete" method="post">
+        @if (!string.IsNullOrEmpty(Model.Biography))
+        {
+            <p class="text-muted">@Model.Biography</p>
+        }
+
+        <form asp-action="Delete" method="post" class="mt-4">
             <input type="hidden" asp-for="Id" />
-            <button type="submit" class="btn btn-danger">Да, удалить</button>
-            <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Да, удалить
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </div>
         </form>
     </div>
 </div>

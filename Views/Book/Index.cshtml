@@ -53,7 +53,7 @@
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">@book.Title</h5>
                     <p class="card-text text-muted">@book.Author?.FullName</p>
-                    <p class="text-success fw-bold">@book.Price.ToString("C0") ₽</p>
+                    <p class="text-success fw-bold">@book.Price.ToString("#,0") ₽</p>
                     <div class="mt-auto">
                         <a asp-action="Details" asp-route-id="@book.Id" class="btn btn-outline-primary w-100 mb-2">Подробнее</a>
                         <form asp-controller="Cart" asp-action="Add" method="post">

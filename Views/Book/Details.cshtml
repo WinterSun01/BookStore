@@ -31,7 +31,7 @@
                 <strong>Издательство:</strong> @Model.Publisher?.Name
             </p>
 
-            <h3 class="text-success mb-4">@Model.Price.ToString("C0") ₽</h3>
+            <h3 class="text-success mb-4">@Model.Price.ToString("#,0") ₽</h3>
 
             <div class="mb-4">
                 <strong>На складе:</strong> @Model.Stock шт.

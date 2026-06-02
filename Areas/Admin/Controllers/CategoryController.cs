@@ -29,6 +29,15 @@ namespace BookStore.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var exists = await _context.Categories
+                    .AnyAsync(c => c.Name.ToLower() == category.Name.ToLower());
+
+                if (exists)
+                {
+                    ModelState.AddModelError("Name", "Такая категория уже существует");
+                    return View(category);
+                }
+
                 _context.Categories.Add(category);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Категория успешно добавлена";

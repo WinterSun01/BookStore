@@ -15,14 +15,20 @@ namespace BookStore.Areas.Admin.Controllers
             _context = context;
         }
 
+        //список всех издательств
         public async Task<IActionResult> Index()
         {
-            var publishers = await _context.Publishers.OrderBy(p => p.Name).ToListAsync();
+            var publishers = await _context.Publishers
+                .OrderBy(p => p.Name)
+                .ToListAsync();
+
             return View(publishers);
         }
 
+        //форма доб. нов. издат.
         public IActionResult Create() => View();
 
+        //созд. нов. издат. с пров. на дубликат
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Publisher publisher)
@@ -40,19 +46,24 @@ namespace BookStore.Areas.Admin.Controllers
 
                 _context.Publishers.Add(publisher);
                 await _context.SaveChangesAsync();
+
                 TempData["SuccessMessage"] = "Издательство успешно добавлено";
                 return RedirectToAction(nameof(Index));
             }
+
             return View(publisher);
         }
 
+        //форма редакт-ия издат.
         public async Task<IActionResult> Edit(int id)
         {
             var publisher = await _context.Publishers.FindAsync(id);
             if (publisher == null) return NotFound();
+
             return View(publisher);
         }
 
+        //сохр. изменений издат.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Publisher publisher)
@@ -63,19 +74,24 @@ namespace BookStore.Areas.Admin.Controllers
             {
                 _context.Update(publisher);
                 await _context.SaveChangesAsync();
+
                 TempData["SuccessMessage"] = "Издательство обновлено";
                 return RedirectToAction(nameof(Index));
             }
+
             return View(publisher);
         }
 
+        //стр. подтвержд. удал. издат.
         public async Task<IActionResult> Delete(int id)
         {
             var publisher = await _context.Publishers.FindAsync(id);
             if (publisher == null) return NotFound();
+
             return View(publisher);
         }
 
+        //удаление издат.
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -85,8 +101,10 @@ namespace BookStore.Areas.Admin.Controllers
             {
                 _context.Publishers.Remove(publisher);
                 await _context.SaveChangesAsync();
+
                 TempData["SuccessMessage"] = "Издательство удалено";
             }
+
             return RedirectToAction(nameof(Index));
         }
     }

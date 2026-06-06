@@ -17,10 +17,11 @@ namespace BookStore.Controllers
             _context = context;
         }
 
-        // GET: /Profile
+        //лич. каб. польз. (данные профиля и ист. заказов)
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var user = await _context.Users.FindAsync(userId);
 
             var orders = await _context.Orders
@@ -42,10 +43,11 @@ namespace BookStore.Controllers
             return View(model);
         }
 
-        // GET: /Profile/Details/5
+        //дет. инф. о конкр. заказе польз.
         public async Task<IActionResult> OrderDetails(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var order = await _context.Orders
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.Book)
@@ -57,7 +59,7 @@ namespace BookStore.Controllers
             return View(order);
         }
 
-        // GET: /Profile/Edit
+        //редакт. лич. данных польз.
         public async Task<IActionResult> Edit()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -77,7 +79,7 @@ namespace BookStore.Controllers
             return View(model);
         }
 
-        // POST: /Profile/Edit
+        //сохр. измен. профиля
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditProfileViewModel model)

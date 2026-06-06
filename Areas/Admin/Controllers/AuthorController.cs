@@ -15,7 +15,7 @@ namespace BookStore.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: /Admin/Author
+        //список всех авторов
         public async Task<IActionResult> Index()
         {
             var authors = await _context.Authors
@@ -25,20 +25,20 @@ namespace BookStore.Areas.Admin.Controllers
             return View(authors);
         }
 
-        // GET: /Admin/Author/Create
+        //форма доб. нов. автора
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: /Admin/Author/Create
+        //отправка формы созд. автора
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Author author)
         {
             if (ModelState.IsValid)
             {
-                // Проверка на дубликат
+                //пров. на дубликат автора по имени (регистронезависимо)
                 var exists = await _context.Authors
                     .AnyAsync(a => a.FullName.ToLower() == author.FullName.ToLower());
 
@@ -50,13 +50,15 @@ namespace BookStore.Areas.Admin.Controllers
 
                 _context.Authors.Add(author);
                 await _context.SaveChangesAsync();
+
                 TempData["SuccessMessage"] = "Автор успешно добавлен";
                 return RedirectToAction(nameof(Index));
             }
+
             return View(author);
         }
 
-        // GET: /Admin/Author/Edit/5
+        //форма ред. автора
         public async Task<IActionResult> Edit(int id)
         {
             var author = await _context.Authors.FindAsync(id);
@@ -65,7 +67,7 @@ namespace BookStore.Areas.Admin.Controllers
             return View(author);
         }
 
-        // POST: /Admin/Author/Edit/5
+        //сохр. изм. автора
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Author author)
@@ -76,13 +78,15 @@ namespace BookStore.Areas.Admin.Controllers
             {
                 _context.Update(author);
                 await _context.SaveChangesAsync();
+
                 TempData["SuccessMessage"] = "Автор успешно обновлён";
                 return RedirectToAction(nameof(Index));
             }
+
             return View(author);
         }
 
-        // GET: /Admin/Author/Delete/5
+        //стр. подтвер. удал. автора
         public async Task<IActionResult> Delete(int id)
         {
             var author = await _context.Authors.FindAsync(id);
@@ -91,7 +95,7 @@ namespace BookStore.Areas.Admin.Controllers
             return View(author);
         }
 
-        // POST: /Admin/Author/Delete/5
+        //удал. автора
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -101,8 +105,10 @@ namespace BookStore.Areas.Admin.Controllers
             {
                 _context.Authors.Remove(author);
                 await _context.SaveChangesAsync();
+
                 TempData["SuccessMessage"] = "Автор удалён";
             }
+
             return RedirectToAction(nameof(Index));
         }
     }

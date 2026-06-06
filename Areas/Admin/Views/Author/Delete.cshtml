@@ -14,18 +14,21 @@
 <div class="card shadow-sm">
     <div class="card-body">
         <h5>@Model.FullName</h5>
-
+        
         @if (!string.IsNullOrEmpty(Model.Biography))
         {
             <p class="text-muted">@Model.Biography</p>
         }
 
         <form asp-action="Delete" method="post" class="mt-4">
+            
             <input type="hidden" asp-for="Id" />
+            
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-danger">
                     <i class="bi bi-trash"></i> Да, удалить
                 </button>
+                
                 <a asp-action="Index" class="btn btn-secondary">Отмена</a>
             </div>
         </form>

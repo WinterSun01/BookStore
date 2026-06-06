@@ -14,8 +14,8 @@ namespace BookStore.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // Получаем книги для главной страницы
             var books = await _bookService.GetAllBooksAsync();
+
             return View(books);
         }
 

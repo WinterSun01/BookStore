@@ -8,18 +8,19 @@
 <h2 class="mb-4">✏️ Редактировать книгу</h2>
 
 <form asp-action="Edit" method="post" enctype="multipart/form-data" class="row g-3">
+    
     <input type="hidden" asp-for="Id" />
-    <input type="hidden" asp-for="CurrentImageUrl" />   <!-- ← Добавь эту строку -->
+    
+    <input type="hidden" asp-for="CurrentImageUrl" />
 
     <div class="col-md-8">
-        <!-- Название -->
+
         <div class="mb-3">
             <label asp-for="Title" class="form-label"></label>
             <input asp-for="Title" class="form-control" />
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
 
-        <!-- Описание -->
         <div class="mb-3">
             <label asp-for="Description" class="form-label"></label>
             <textarea asp-for="Description" class="form-control" rows="4"></textarea>
@@ -36,23 +37,21 @@
             </div>
         </div>
 
-        <!-- ==================== ОБЛОЖКА ==================== -->
         <div class="mb-4">
             <label class="form-label fw-bold">Обложка книги</label>
-
+            
             @if (!string.IsNullOrEmpty(Model.CurrentImageUrl))
             {
                 <div class="mb-2">
-                    <img src="@Model.CurrentImageUrl" width="140" class="img-thumbnail" />
+                    <img src="@Model.CurrentImageUrl" width="140" class="img-thumbnail" alt="Текущая обложка" />
                     <div><small class="text-muted">Текущая обложка</small></div>
                 </div>
             }
-
+            
             <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
             <small class="text-muted">Загрузите новую обложку, если хотите заменить текущую</small>
         </div>
 
-        <!-- Выпадающие списки -->
         <div class="row">
             <div class="col-md-4">
                 <label asp-for="AuthorId" class="form-label"></label>

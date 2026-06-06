@@ -22,7 +22,7 @@ namespace BookStore.Models
 
         [Display(Name = "Телефон")]
         [Phone]
-        public string? Phone { get; set; }   // уже есть в IdentityUser, но можно оставить для явности
+        public string? Phone { get; set; }
 
         [Display(Name = "Полное имя")]
         public string FullName => $"{LastName} {FirstName} {MiddleName}".Trim();

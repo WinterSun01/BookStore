@@ -12,7 +12,6 @@ namespace BookStore.Models.Entities
 
         public string? Description { get; set; }
 
-        // Навигационное свойство
         public ICollection<Book> Books { get; set; } = new List<Book>();
     }
 }

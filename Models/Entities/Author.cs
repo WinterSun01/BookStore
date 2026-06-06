@@ -13,7 +13,6 @@ namespace BookStore.Models.Entities
         public string? Biography { get; set; }
         public string? PhotoUrl { get; set; }
 
-        // Навигационное свойство
         public ICollection<Book> Books { get; set; } = new List<Book>();
     }
 }

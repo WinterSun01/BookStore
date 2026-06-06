@@ -5,7 +5,6 @@
 
 <h2 class="mb-4">📚 Каталог книг</h2>
 
-<!-- Форма поиска и фильтров -->
 <div class="card mb-4">
     <div class="card-body">
         <form asp-action="Index" method="get" class="row g-3">
@@ -37,7 +36,6 @@
     </div>
 </div>
 
-<!-- Результаты -->
 <div class="row">
     @foreach (var book in Model)
     {
@@ -74,13 +72,11 @@
     </div>
 }
 
-<!-- ==================== ПАГИНАЦИЯ ==================== -->
 @if (ViewBag.TotalPages > 1)
 {
     <nav aria-label="Навигация по страницам" class="mt-4">
         <ul class="pagination justify-content-center">
 
-            <!-- Кнопка "Назад" -->
             <li class="page-item @(ViewBag.HasPreviousPage ? "" : "disabled")">
                 <a class="page-link"
                    asp-action="Index"
@@ -93,7 +89,6 @@
                 </a>
             </li>
 
-            <!-- Номера страниц -->
             @for (int i = 1; i <= ViewBag.TotalPages; i++)
             {
                 <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
@@ -109,7 +104,6 @@
                 </li>
             }
 
-            <!-- Кнопка "Вперёд" -->
             <li class="page-item @(ViewBag.HasNextPage ? "" : "disabled")">
                 <a class="page-link"
                    asp-action="Index"

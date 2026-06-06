@@ -17,11 +17,11 @@ namespace BookStore.Models.Entities
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
-        public string? ImageUrl { get; set; }           // Обложка книги
-        public int Stock { get; set; } = 0;             // Количество на складе
+        public string? ImageUrl { get; set; }
+        public int Stock { get; set; } = 0;
 
         public int AuthorId { get; set; }
-        public Author Author { get; set; } = null!;     // Навигационное свойство
+        public Author Author { get; set; } = null!;
 
         public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;

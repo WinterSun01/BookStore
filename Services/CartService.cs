@@ -7,7 +7,7 @@ namespace BookStore.Services
 {
     public class CartService : ICartService
     {
-        private readonly IShoppingCartRepository _cartRepository; // Создадим позже
+        private readonly IShoppingCartRepository _cartRepository;
         private readonly IBookRepository _bookRepository;
 
         public CartService(IShoppingCartRepository cartRepository, IBookRepository bookRepository)

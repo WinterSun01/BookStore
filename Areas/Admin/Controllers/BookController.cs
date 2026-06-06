@@ -14,7 +14,7 @@ namespace BookStore.Areas.Admin.Controllers
     public class BookController : Controller
     {
         private readonly IBookService _bookService;
-        private readonly ApplicationDbContext _context;   // Для выпадающих списков
+        private readonly ApplicationDbContext _context;
 
         public BookController(IBookService bookService, ApplicationDbContext context)
         {
@@ -22,8 +22,7 @@ namespace BookStore.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: /Admin/Book
-        // GET: /Admin/Book
+        //список книг с возм. поиска
         public async Task<IActionResult> Index(string? searchTerm)
         {
             var booksQuery = _context.Books
@@ -37,10 +36,9 @@ namespace BookStore.Areas.Admin.Controllers
                 searchTerm = searchTerm.ToLower().Trim();
 
                 booksQuery = booksQuery.Where(b =>
-                    // По названию книги — поиск по любому слову
+                    //поиск по названию книги (содержит слово)
                     (b.Title != null && b.Title.ToLower().Contains(searchTerm)) ||
-
-                    // По автору, издательству и категории — поиск с начала слова
+                    //поиск по автору, издательству и категории (начинается со слова)
                     (b.Author != null && b.Author.FullName.ToLower().StartsWith(searchTerm)) ||
                     (b.Publisher != null && b.Publisher.Name.ToLower().StartsWith(searchTerm)) ||
                     (b.Category != null && b.Category.Name.ToLower().StartsWith(searchTerm))
@@ -52,18 +50,17 @@ namespace BookStore.Areas.Admin.Controllers
                 .ToListAsync();
 
             ViewBag.SearchTerm = searchTerm;
-
             return View(books);
         }
 
-        // GET: /Admin/Book/Create
+        //Admin/Book/Create (форма доб. нов. книги
         public async Task<IActionResult> Create()
         {
             await LoadDropdownsAsync();
             return View();
         }
 
-        // POST: /Admin/Book/Create
+        //созд. нов. книги + загр-ка обложки
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookViewModel model)
@@ -80,7 +77,7 @@ namespace BookStore.Areas.Admin.Controllers
                         await model.ImageFile.CopyToAsync(stream);
                     }
 
-                    model.ImageUrl = "/images/books/" + fileName;   // ← Должна быть эта строка
+                    model.ImageUrl = "/images/books/" + fileName;
                 }
 
                 await _bookService.AddBookAsync(model);
@@ -92,7 +89,7 @@ namespace BookStore.Areas.Admin.Controllers
             return View(model);
         }
 
-        // GET: /Admin/Book/Edit/5
+        //форма ред. книги
         public async Task<IActionResult> Edit(int id)
         {
             var model = await _bookService.GetBookForEditAsync(id);
@@ -103,7 +100,7 @@ namespace BookStore.Areas.Admin.Controllers
             return View(model);
         }
 
-        // POST: /Admin/Book/Edit
+        //обнов. книги + загр-ка нов. обложки
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(BookViewModel model)
@@ -112,7 +109,6 @@ namespace BookStore.Areas.Admin.Controllers
             {
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
-                    // загружаем новую картинку
                     var fileName = Path.GetFileName(model.ImageFile.FileName);
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/books", fileName);
 
@@ -125,7 +121,6 @@ namespace BookStore.Areas.Admin.Controllers
                 }
                 else
                 {
-                    // ← Вот эта часть важна!
                     model.ImageUrl = model.CurrentImageUrl;
                 }
 
@@ -138,7 +133,7 @@ namespace BookStore.Areas.Admin.Controllers
             return View(model);
         }
 
-        // GET: /Admin/Book/Delete/5
+        //стр. подтв. удал. книги
         public async Task<IActionResult> Delete(int id)
         {
             var model = await _bookService.GetBookForEditAsync(id);
@@ -148,7 +143,7 @@ namespace BookStore.Areas.Admin.Controllers
             return View(model);
         }
 
-        // POST: /Admin/Book/Delete/5
+        //удал. книги
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -157,6 +152,8 @@ namespace BookStore.Areas.Admin.Controllers
             TempData["Success"] = "✅ Книга успешно удалена!";
             return RedirectToAction(nameof(Index));
         }
+
+        //для динамического добавления
 
         [HttpPost]
         public async Task<IActionResult> AddAuthor([FromBody] AddAuthorDto dto)
@@ -197,16 +194,15 @@ namespace BookStore.Areas.Admin.Controllers
             return Json(new { id = publisher.Id, name = publisher.Name });
         }
 
-        // Вспомогательные классы (можно положить в отдельный файл)
         public class AddAuthorDto { public string FullName { get; set; } }
         public class AddCategoryDto { public string Name { get; set; } }
         public class AddPublisherDto { public string Name { get; set; } }
 
-        // ==================== ВСПОМОГАТЕЛЬНЫЙ МЕТОД ====================
+        //данные для выпад. списков
         private async Task LoadDropdownsAsync()
         {
             ViewBag.Authors = await _context.Authors
-                .OrderBy(a => a.FullName)                    // ← Сортировка по имени автора
+                .OrderBy(a => a.FullName)
                 .Select(a => new SelectListItem
                 {
                     Value = a.Id.ToString(),
@@ -215,7 +211,7 @@ namespace BookStore.Areas.Admin.Controllers
                 .ToListAsync();
 
             ViewBag.Categories = await _context.Categories
-                .OrderBy(c => c.Name)                        // ← Сортировка по названию категории
+                .OrderBy(c => c.Name)
                 .Select(c => new SelectListItem
                 {
                     Value = c.Id.ToString(),
@@ -224,7 +220,7 @@ namespace BookStore.Areas.Admin.Controllers
                 .ToListAsync();
 
             ViewBag.Publishers = await _context.Publishers
-                .OrderBy(p => p.Name)                        // ← Сортировка по названию издательства
+                .OrderBy(p => p.Name)
                 .Select(p => new SelectListItem
                 {
                     Value = p.Id.ToString(),

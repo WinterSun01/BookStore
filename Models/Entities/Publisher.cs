@@ -13,7 +13,6 @@ namespace BookStore.Models.Entities
         public string? Description { get; set; }
         public string? Country { get; set; }
 
-        // Навигационное свойство
         public ICollection<Book> Books { get; set; } = new List<Book>();
     }
 }

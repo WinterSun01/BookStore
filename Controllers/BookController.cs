@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BookStore.Services.Interfaces;
-using BookStore.Data;                    // Для ViewBag.Categories
+using BookStore.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Controllers
@@ -8,7 +8,7 @@ namespace BookStore.Controllers
     public class BookController : Controller
     {
         private readonly IBookService _bookService;
-        private readonly ApplicationDbContext _context;   // Для списка категорий в фильтре
+        private readonly ApplicationDbContext _context;
 
         public BookController(IBookService bookService, ApplicationDbContext context)
         {
@@ -16,7 +16,7 @@ namespace BookStore.Controllers
             _context = context;
         }
 
-        // GET: /Book (с поиском, фильтрами и пагинацией)
+        //каталог книг с поиском, фильтрами и пагинацией
         public async Task<IActionResult> Index(
             string? searchTerm,
             int? categoryId,
@@ -26,19 +26,16 @@ namespace BookStore.Controllers
         {
             const int pageSize = 12;
 
-            // Получаем все книги по фильтрам
             var allBooks = await _bookService.SearchAndFilterAsync(searchTerm, categoryId, minPrice, maxPrice);
 
             var totalItems = allBooks.Count();
             var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
 
-            // Берём только нужную страницу
             var booksOnPage = allBooks
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
-            // Передаём данные для фильтров
             ViewBag.SearchTerm = searchTerm;
             ViewBag.CategoryId = categoryId;
             ViewBag.MinPrice = minPrice;
@@ -48,7 +45,6 @@ namespace BookStore.Controllers
                 .OrderBy(c => c.Name)
                 .ToListAsync();
 
-            // Данные для пагинации (передаём в View)
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = totalPages;
             ViewBag.HasPreviousPage = page > 1;
@@ -57,7 +53,7 @@ namespace BookStore.Controllers
             return View(booksOnPage);
         }
 
-        // GET: /Book/Details/5
+        //детальн. стр. книги
         public async Task<IActionResult> Details(int id)
         {
             var book = await _bookService.GetBookByIdAsync(id);
@@ -65,7 +61,6 @@ namespace BookStore.Controllers
             {
                 return NotFound();
             }
-
             return View(book);
         }
     }

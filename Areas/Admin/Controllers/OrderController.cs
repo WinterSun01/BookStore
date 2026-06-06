@@ -17,17 +17,16 @@ namespace BookStore.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: /Admin/Order
+        //список всех заказов с осн. инф.
         public async Task<IActionResult> Index()
         {
             var orders = await _context.Orders
-                .Include(o => o.User)           // ← Вот это важно!
+                .Include(o => o.User)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.Book)
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
 
-            // Простая статистика
             ViewBag.TotalOrders = orders.Count;
             ViewBag.TotalRevenue = orders.Sum(o => o.TotalAmount);
             ViewBag.PaidOrders = orders.Count(o => o.Status == "Paid");
@@ -35,7 +34,7 @@ namespace BookStore.Areas.Admin.Controllers
             return View(orders);
         }
 
-        // GET: /Admin/Order/Details/5
+        //детал. инф. по конкр. заказу
         public async Task<IActionResult> Details(int id)
         {
             var order = await _context.Orders
@@ -49,7 +48,7 @@ namespace BookStore.Areas.Admin.Controllers
             return View(order);
         }
 
-        // POST: Изменение статуса
+        //быстрая смена статуса заказа
         [HttpPost]
         public async Task<IActionResult> ChangeStatus(int id, string status)
         {
@@ -58,8 +57,10 @@ namespace BookStore.Areas.Admin.Controllers
             {
                 order.Status = status;
                 await _context.SaveChangesAsync();
+
                 TempData["Success"] = $"Статус заказа №{id} изменён на '{status}'";
             }
+
             return RedirectToAction(nameof(Index));
         }
     }

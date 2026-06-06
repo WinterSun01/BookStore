@@ -1,4 +1,5 @@
 ﻿@model BookStore.Models.ViewModels.BookViewModel
+
 @{
     ViewData["Title"] = "Удалить книгу";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -7,7 +8,9 @@
 <h3>Вы уверены, что хотите удалить книгу "<strong>@Model.Title</strong>"?</h3>
 
 <form asp-action="Delete" method="post">
+    
     <input type="hidden" asp-for="Id" />
+    
     <button type="submit" class="btn btn-danger">Да, удалить</button>
     <a asp-action="Index" class="btn btn-secondary">Отмена</a>
 </form>

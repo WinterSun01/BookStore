@@ -12,12 +12,16 @@
   <ItemGroup>
     <Compile Remove="Extensions\**" />
     <Compile Remove="Helpers\**" />
+    <Compile Remove="Models\DTOs\**" />
     <Content Remove="Extensions\**" />
     <Content Remove="Helpers\**" />
+    <Content Remove="Models\DTOs\**" />
     <EmbeddedResource Remove="Extensions\**" />
     <EmbeddedResource Remove="Helpers\**" />
+    <EmbeddedResource Remove="Models\DTOs\**" />
     <None Remove="Extensions\**" />
     <None Remove="Helpers\**" />
+    <None Remove="Models\DTOs\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,7 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\DTOs\" />
     <Folder Include="wwwroot\images\books\" />
   </ItemGroup>
 

@@ -11,6 +11,6 @@
         public Book Book { get; set; } = null!;
 
         public int Quantity { get; set; }
-        public decimal PricePerUnit { get; set; } // Цена на момент заказа
+        public decimal PricePerUnit { get; set; }
     }
 }

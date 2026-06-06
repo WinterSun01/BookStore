@@ -8,14 +8,12 @@ namespace BookStore.ViewComponents
         {
             var items = new List<BreadcrumbItem>();
 
-            // Всегда добавляем "Главная"
             items.Add(new BreadcrumbItem
             {
                 Title = "Главная",
                 Url = Url.Action("Index", "Home")
             });
 
-            // Определяем текущий контроллер и действие
             var controller = ViewContext.RouteData.Values["controller"]?.ToString();
             var action = ViewContext.RouteData.Values["action"]?.ToString();
 

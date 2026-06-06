@@ -20,7 +20,7 @@ namespace BookStore.Controllers
             _context = context;
         }
 
-        // GET: /Order/Create
+        //форма оформ. заказа на основе тек. корзины
         public async Task<IActionResult> Create()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -44,7 +44,7 @@ namespace BookStore.Controllers
             return View(order);
         }
 
-        // GET: /Order/MyOrders
+        //ист. заказов тек. польз.
         public async Task<IActionResult> MyOrders()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -60,7 +60,7 @@ namespace BookStore.Controllers
             return View(orders);
         }
 
-        // POST: /Order/Create
+        //созд. и сохр. заказа
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Order order)
@@ -77,14 +77,13 @@ namespace BookStore.Controllers
                 order.OrderDate = DateTime.UtcNow;
                 order.TotalAmount = await _cartService.GetCartTotalAsync(userId!);
 
-                // === ИСПРАВЛЕННАЯ ЛОГИКА СТАТУСА ===
                 if (order.PaymentMethod == "Card")
                 {
-                    order.Status = "Paid";           // Оплачено сразу
+                    order.Status = "Paid";
                 }
                 else if (order.PaymentMethod == "Cash")
                 {
-                    order.Status = "AwaitingPayment"; // Ожидает оплаты при получении
+                    order.Status = "AwaitingPayment";
                 }
                 else
                 {
@@ -94,7 +93,6 @@ namespace BookStore.Controllers
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
 
-                // Добавляем товары в заказ
                 foreach (var cartItem in cartItems)
                 {
                     _context.OrderItems.Add(new OrderItem
@@ -108,7 +106,6 @@ namespace BookStore.Controllers
 
                 await _context.SaveChangesAsync();
 
-                // Очищаем корзину
                 await _cartService.ClearCartAsync(userId!);
 
                 TempData["Success"] = "✅ Заказ успешно оформлен!";

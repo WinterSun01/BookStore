@@ -26,7 +26,6 @@ namespace BookStore.Models.ViewModels
         [Display(Name = "Обложка (URL)")]
         public string? ImageUrl { get; set; }
 
-        // ← Добавь эту строку
         public string? CurrentImageUrl { get; set; }
 
         [Required]

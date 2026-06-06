@@ -15,7 +15,6 @@ namespace BookStore.Services
             _bookRepository = bookRepository;
         }
 
-        // ==================== ПОИСК И ФИЛЬТРАЦИЯ ====================
         public async Task<IEnumerable<Book>> SearchAndFilterAsync(
             string? searchTerm, int? categoryId, decimal? minPrice, decimal? maxPrice)
         {
@@ -42,7 +41,6 @@ namespace BookStore.Services
             return books.OrderByDescending(b => b.CreatedAt);
         }
 
-        // ==================== МЕТОДЫ ДЛЯ ОБЫЧНЫХ ПОЛЬЗОВАТЕЛЕЙ ====================
         public async Task<IEnumerable<Book>> GetAllBooksAsync()
         {
             return await _bookRepository.GetAllAsync();
@@ -78,7 +76,6 @@ namespace BookStore.Services
             await _bookRepository.DeleteAsync(id);
         }
 
-        // ==================== МЕТОДЫ ДЛЯ АДМИН-ПАНЕЛИ ====================
         public async Task<IEnumerable<BookViewModel>> GetAllBooksForAdminAsync()
         {
             var books = await _bookRepository.GetAllAsync();
@@ -109,7 +106,7 @@ namespace BookStore.Services
                 Price = book.Price,
                 Stock = book.Stock,
                 ImageUrl = book.ImageUrl,
-                CurrentImageUrl = book.ImageUrl,   // ← Добавь эту строку
+                CurrentImageUrl = book.ImageUrl,
                 AuthorId = book.AuthorId,
                 CategoryId = book.CategoryId,
                 PublisherId = book.PublisherId
@@ -124,7 +121,7 @@ namespace BookStore.Services
                 Description = model.Description,
                 Price = model.Price,
                 Stock = model.Stock,
-                ImageUrl = model.ImageUrl,           // ← Вот эта строка важна!
+                ImageUrl = model.ImageUrl,
                 AuthorId = model.AuthorId,
                 CategoryId = model.CategoryId,
                 PublisherId = model.PublisherId,
@@ -143,7 +140,7 @@ namespace BookStore.Services
             book.Description = model.Description;
             book.Price = model.Price;
             book.Stock = model.Stock;
-            book.ImageUrl = model.ImageUrl;           // ← Должна быть эта строка
+            book.ImageUrl = model.ImageUrl;
             book.AuthorId = model.AuthorId;
             book.CategoryId = model.CategoryId;
             book.PublisherId = model.PublisherId;

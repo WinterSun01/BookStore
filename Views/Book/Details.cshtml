@@ -5,7 +5,6 @@
 
 <div class="container mt-4">
     <div class="row">
-        <!-- Обложка -->
         <div class="col-md-4 text-center">
             @if (!string.IsNullOrEmpty(Model.ImageUrl))
             {
@@ -19,7 +18,6 @@
             }
         </div>
 
-        <!-- Информация о книге -->
         <div class="col-md-8">
             <h1 class="mb-3">@Model.Title</h1>
 
@@ -37,7 +35,6 @@
                 <strong>На складе:</strong> @Model.Stock шт.
             </div>
 
-            <!-- Кнопки действий -->
             <div class="d-flex gap-3 mb-5">
                 <form asp-controller="Cart" asp-action="Add" method="post">
                     <input type="hidden" name="bookId" value="@Model.Id" />

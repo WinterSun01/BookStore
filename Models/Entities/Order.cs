@@ -14,12 +14,11 @@ namespace BookStore.Models.Entities
         [Required]
         public decimal TotalAmount { get; set; }
 
-        public string Status { get; set; } = "Pending"; // Pending, Paid, Shipped, Delivered, Cancelled
+        public string Status { get; set; } = "Pending";
 
         public string? ShippingAddress { get; set; }
-        public string? PaymentMethod { get; set; } // Имитация платежа
+        public string? PaymentMethod { get; set; } //имитация платежа
 
-        // Навигационные свойства
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }

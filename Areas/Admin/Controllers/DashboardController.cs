@@ -1,4 +1,4 @@
-﻿using BookStore.Data;                    // ← Добавь эту строку
+﻿using BookStore.Data;
 using BookStore.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,16 +11,18 @@ namespace BookStore.Areas.Admin.Controllers
     public class DashboardController : Controller
     {
         private readonly IBookService _bookService;
-        private readonly ApplicationDbContext _context;   // ← Добавь эту строку
+        private readonly ApplicationDbContext _context;
 
         public DashboardController(IBookService bookService, ApplicationDbContext context)
         {
             _bookService = bookService;
-            _context = context;                           // ← Добавь эту строку
+            _context = context;
         }
 
+        //глав. стр. админ. панели
         public async Task<IActionResult> Index()
         {
+            //сбор статистики для отобр. на дашборде
             ViewBag.TotalBooks = await _context.Books.CountAsync();
             ViewBag.TotalAuthors = await _context.Authors.CountAsync();
             ViewBag.TotalCategories = await _context.Categories.CountAsync();

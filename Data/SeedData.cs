@@ -16,8 +16,8 @@ namespace BookStore.Data
 
             await context.Database.MigrateAsync();
 
-            // Роли и Админ
             const string adminRole = "Admin";
+
             if (!await roleManager.RoleExistsAsync(adminRole))
                 await roleManager.CreateAsync(new IdentityRole(adminRole));
 
@@ -39,7 +39,6 @@ namespace BookStore.Data
                 await userManager.AddToRoleAsync(adminUser, adminRole);
             }
 
-            // Справочники
             if (!context.Categories.Any())
             {
                 context.Categories.AddRange(
@@ -51,6 +50,7 @@ namespace BookStore.Data
                 await context.SaveChangesAsync();
             }
 
+            // Авторы
             if (!context.Authors.Any())
             {
                 context.Authors.AddRange(
@@ -63,6 +63,7 @@ namespace BookStore.Data
                 await context.SaveChangesAsync();
             }
 
+            // Издательства
             if (!context.Publishers.Any())
             {
                 context.Publishers.AddRange(
@@ -72,7 +73,6 @@ namespace BookStore.Data
                 await context.SaveChangesAsync();
             }
 
-            // Книги
             if (!context.Books.Any())
             {
                 var fantasy = context.Categories.First(c => c.Name == "Фантастика");
@@ -89,12 +89,72 @@ namespace BookStore.Data
                 var exmo = context.Publishers.First(p => p.Name == "Эксмо");
 
                 context.Books.AddRange(
-                    new Book { Title = "1984", Description = "Антиутопия о тоталитарном обществе", Price = 450, Stock = 15, AuthorId = orwell.Id, CategoryId = fantasy.Id, PublisherId = exmo.Id, ImageUrl = "/images/books/1984.jpg" },
-                    new Book { Title = "Я, робот", Description = "Классический сборник рассказов о роботах", Price = 480, Stock = 12, AuthorId = asimov.Id, CategoryId = fantasy.Id, PublisherId = exmo.Id, ImageUrl = "/images/books/i_robot.jpg" },
-                    new Book { Title = "Война и мир", Description = "Эпический роман о войне и мире", Price = 890, Stock = 5, AuthorId = tolstoy.Id, CategoryId = classic.Id, PublisherId = exmo.Id, ImageUrl = "/images/books/war_and_peace.jpg" },
-                    new Book { Title = "Убийство в Восточном экспрессе", Description = "Знаменитый детектив", Price = 380, Stock = 12, AuthorId = christie.Id, CategoryId = detective.Id, PublisherId = exmo.Id, ImageUrl = "/images/books/murder_on_the_orient_express.jpg" },
-                    new Book { Title = "Гордость и предубеждение", Description = "Роман о любви и социуме", Price = 420, Stock = 10, AuthorId = austen.Id, CategoryId = romance.Id, PublisherId = exmo.Id, ImageUrl = "/images/books/pride_and_prejudice.jpg" },
-                    new Book { Title = "Скотный двор", Description = "Сатирическая повесть", Price = 320, Stock = 20, AuthorId = orwell.Id, CategoryId = fantasy.Id, PublisherId = exmo.Id, ImageUrl = "/images/books/animal_farm.jpg" }
+                    new Book
+                    {
+                        Title = "1984",
+                        Description = "Антиутопия о тоталитарном обществе",
+                        Price = 450,
+                        Stock = 15,
+                        AuthorId = orwell.Id,
+                        CategoryId = fantasy.Id,
+                        PublisherId = exmo.Id,
+                        ImageUrl = "/images/books/1984.jpg"
+                    },
+                    new Book
+                    {
+                        Title = "Я, робот",
+                        Description = "Классический сборник рассказов о роботах",
+                        Price = 480,
+                        Stock = 12,
+                        AuthorId = asimov.Id,
+                        CategoryId = fantasy.Id,
+                        PublisherId = exmo.Id,
+                        ImageUrl = "/images/books/i_robot.jpg"
+                    },
+                    new Book
+                    {
+                        Title = "Война и мир",
+                        Description = "Эпический роман о войне и мире",
+                        Price = 890,
+                        Stock = 5,
+                        AuthorId = tolstoy.Id,
+                        CategoryId = classic.Id,
+                        PublisherId = exmo.Id,
+                        ImageUrl = "/images/books/war_and_peace.jpg"
+                    },
+                    new Book
+                    {
+                        Title = "Убийство в Восточном экспрессе",
+                        Description = "Знаменитый детектив",
+                        Price = 380,
+                        Stock = 12,
+                        AuthorId = christie.Id,
+                        CategoryId = detective.Id,
+                        PublisherId = exmo.Id,
+                        ImageUrl = "/images/books/murder_on_the_orient_express.jpg"
+                    },
+                    new Book
+                    {
+                        Title = "Гордость и предубеждение",
+                        Description = "Роман о любви и социуме",
+                        Price = 420,
+                        Stock = 10,
+                        AuthorId = austen.Id,
+                        CategoryId = romance.Id,
+                        PublisherId = exmo.Id,
+                        ImageUrl = "/images/books/pride_and_prejudice.jpg"
+                    },
+                    new Book
+                    {
+                        Title = "Скотный двор",
+                        Description = "Сатирическая повесть",
+                        Price = 320,
+                        Stock = 20,
+                        AuthorId = orwell.Id,
+                        CategoryId = fantasy.Id,
+                        PublisherId = exmo.Id,
+                        ImageUrl = "/images/books/animal_farm.jpg"
+                    }
                 );
 
                 await context.SaveChangesAsync();

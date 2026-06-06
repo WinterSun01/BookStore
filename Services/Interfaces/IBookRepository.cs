@@ -2,7 +2,6 @@
 
 namespace BookStore.Repositories.Interfaces
 {
-    // Интерфейс репозитория отвечает только за работу с БД
     public interface IBookRepository
     {
         Task<IEnumerable<Book>> GetAllAsync();

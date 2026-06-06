@@ -7,7 +7,6 @@
 
 <h2 class="mb-4">📚 Управление книгами</h2>
 
-<!-- Форма поиска -->
 <div class="card mb-4">
     <div class="card-body">
         <form asp-action="Index" method="get" class="row g-3 align-items-end">
@@ -26,7 +25,6 @@
     </div>
 </div>
 
-<!-- Кнопка добавления -->
 <div class="mb-3">
     <a asp-area="Admin" asp-controller="Book" asp-action="Create"
        class="btn btn-success">
@@ -34,7 +32,6 @@
     </a>
 </div>
 
-<!-- Таблица книг -->
 <div class="table-responsive">
     <table class="table table-striped table-hover align-middle">
         <thead class="table-dark">
@@ -50,7 +47,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var book in Model)
+            @foreach (var book in Model)   
             {
                 <tr>
                     <td>
@@ -71,8 +68,10 @@
                     <td class="text-success fw-bold">@book.Price.ToString("#,0") ₽</td>
                     <td>@book.Stock шт.</td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@book.Id" class="btn btn-primary btn-sm me-2">Изменить</a>
-                        <a asp-action="Delete" asp-route-id="@book.Id" class="btn btn-danger btn-sm">Удалить</a>
+                        <a asp-action="Edit" asp-route-id="@book.Id" 
+                           class="btn btn-primary btn-sm me-2">Изменить</a>
+                        <a asp-action="Delete" asp-route-id="@book.Id" 
+                           class="btn btn-danger btn-sm">Удалить</a>
                     </td>
                 </tr>
             }

@@ -1,4 +1,5 @@
 ﻿@model BookStore.Models.ViewModels.BookViewModel
+
 @{
     ViewData["Title"] = "Добавить новую книгу";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -8,21 +9,19 @@
 
 <form asp-action="Create" method="post" enctype="multipart/form-data" class="row g-3">
     <div class="col-md-8">
-        <!-- Название -->
+
         <div class="mb-3">
             <label asp-for="Title" class="form-label"></label>
             <input asp-for="Title" class="form-control" />
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
 
-        <!-- Описание -->
         <div class="mb-3">
             <label asp-for="Description" class="form-label"></label>
             <textarea asp-for="Description" class="form-control" rows="4"></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
 
-        <!-- Цена и Количество -->
         <div class="row">
             <div class="col-md-6">
                 <label asp-for="Price" class="form-label"></label>
@@ -35,13 +34,12 @@
             </div>
         </div>
 
-        <!-- Обложка книги -->
         <div class="mb-3">
             <label class="form-label">Обложка книги</label>
             @if (Model != null && !string.IsNullOrEmpty(Model.ImageUrl))
             {
                 <div class="mb-2">
-                    <img src="@Model.ImageUrl" width="120" class="border rounded" />
+                    <img src="@Model.ImageUrl" width="120" class="border rounded" alt="Текущая обложка" />
                     <div class="form-text">Текущая обложка</div>
                 </div>
             }
@@ -49,9 +47,7 @@
             <small class="text-muted">Загрузите изображение обложки (jpg, png, webp)</small>
         </div>
 
-        <!-- Выпадающие списки -->
         <div class="row">
-            <!-- Автор -->
             <div class="col-md-4">
                 <label asp-for="AuthorId" class="form-label d-flex justify-content-between">
                     <span>Автор</span>
@@ -65,7 +61,6 @@
                 </select>
             </div>
 
-            <!-- Категория -->
             <div class="col-md-4">
                 <label asp-for="CategoryId" class="form-label d-flex justify-content-between">
                     <span>Категория</span>
@@ -79,7 +74,6 @@
                 </select>
             </div>
 
-            <!-- Издательство -->
             <div class="col-md-4">
                 <label asp-for="PublisherId" class="form-label d-flex justify-content-between">
                     <span>Издательство</span>
@@ -94,7 +88,6 @@
             </div>
         </div>
 
-        <!-- Кнопки -->
         <div class="mt-4">
             <button type="submit" class="btn btn-success">Сохранить книгу</button>
             <a asp-action="Index" class="btn btn-secondary">Отмена</a>
@@ -102,8 +95,7 @@
     </div>
 </form>
 
-<!-- ==================== МОДАЛЬНЫЕ ОКНА (ВЫНЕСЕНЫ НАРУЖУ ФОРМЫ) ==================== -->
-<!-- Модальное окно: Добавить автора -->
+
 <div class="modal fade" id="addAuthorModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -125,7 +117,6 @@
     </div>
 </div>
 
-<!-- Модальное окно: Добавить категорию -->
 <div class="modal fade" id="addCategoryModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -147,7 +138,6 @@
     </div>
 </div>
 
-<!-- Модальное окно: Добавить издательство -->
 <div class="modal fade" id="addPublisherModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -187,7 +177,6 @@
                 const option = new Option(data.fullName, data.id);
                 select.add(option);
                 select.value = data.id;
-
                 bootstrap.Modal.getInstance(document.getElementById('addAuthorModal')).hide();
                 document.getElementById('newAuthorName').value = '';
             } else {
@@ -211,7 +200,6 @@
                 const option = new Option(data.name, data.id);
                 select.add(option);
                 select.value = data.id;
-
                 bootstrap.Modal.getInstance(document.getElementById('addCategoryModal')).hide();
                 document.getElementById('newCategoryName').value = '';
             } else {
@@ -235,7 +223,6 @@
                 const option = new Option(data.name, data.id);
                 select.add(option);
                 select.value = data.id;
-
                 bootstrap.Modal.getInstance(document.getElementById('addPublisherModal')).hide();
                 document.getElementById('newPublisherName').value = '';
             } else {

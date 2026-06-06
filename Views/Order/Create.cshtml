@@ -14,7 +14,7 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Способ оплаты (имитация)</label>
+                <label class="form-label">Способ оплаты</label>
                 <select class="form-select" asp-for="PaymentMethod">
                     <option value="Card">Банковская карта</option>
                     <option value="Cash">Наличными при получении</option>
@@ -26,7 +26,6 @@
         </form>
     </div>
 
-    <!-- Состав заказа -->
     <div class="col-md-4">
         <h5>Ваш заказ</h5>
         @foreach (var item in ViewBag.CartItems)

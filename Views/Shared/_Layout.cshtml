@@ -10,7 +10,6 @@
 </head>
 <body>
     <header>
-        <!-- ==================== NAVBAR ==================== -->
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">📚 BookStore</a>
@@ -22,7 +21,6 @@
                 </button>
 
                 <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
-                    <!-- Левое меню -->
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
@@ -32,14 +30,12 @@
                         </li>
                     </ul>
 
-                    <!-- Корзина -->
                     <ul class="navbar-nav me-3">
                         <li class="nav-item">
                             @await Component.InvokeAsync("Cart")
                         </li>
                     </ul>
 
-                    <!-- Логин / Регистрация -->
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -48,7 +44,6 @@
 
     <div class="container">
         <main role="main" class="pb-3">
-            <!-- УВЕДОМЛЕНИЯ -->
             @if (TempData["SuccessMessage"] != null)
             {
                 <div class="alert alert-success alert-dismissible fade show shadow-sm mt-3" role="alert">
@@ -64,18 +59,15 @@
                 </div>
             }
 
-            <!-- Хлебные крошки -->
             @await Component.InvokeAsync("Breadcrumb", new { currentPageTitle = ViewData["Title"]?.ToString() ?? "" })
 
             @RenderBody()
         </main>
     </div>
 
-    <!-- ==================== ФУТЕР ==================== -->
     <footer class="bg-dark text-white pt-5 pb-4 mt-5">
         <div class="container">
             <div class="row">
-                <!-- О компании -->
                 <div class="col-md-4 mb-4">
                     <h5 class="fw-bold mb-3">📚 BookStore</h5>
                     <p class="text-white-50 small">
@@ -89,7 +81,6 @@
                     </div>
                 </div>
 
-                <!-- Полезные ссылки -->
                 <div class="col-md-3 mb-4">
                     <h6 class="fw-bold mb-3">Полезные ссылки</h6>
                     <ul class="list-unstyled">
@@ -100,7 +91,6 @@
                     </ul>
                 </div>
 
-                <!-- Контакты -->
                 <div class="col-md-3 mb-4">
                     <h6 class="fw-bold mb-3">Контакты</h6>
                     <ul class="list-unstyled text-white-50 small">
@@ -111,7 +101,6 @@
                     </ul>
                 </div>
 
-                <!-- Подписка -->
                 <div class="col-md-2 mb-4">
                     <h6 class="fw-bold mb-3">Подписка</h6>
                     <p class="text-white-50 small">Получайте новости о новинках и скидках</p>
@@ -129,7 +118,6 @@
 
             <hr class="my-4 border-secondary">
 
-            <!-- Копирайт -->
             <div class="row align-items-center">
                 <div class="col-md-6 text-center text-md-start">
                     <p class="mb-0 text-white-50 small">

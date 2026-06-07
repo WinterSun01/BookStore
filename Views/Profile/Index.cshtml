@@ -65,7 +65,7 @@
                     <div class="card mb-3">
                         <div class="card-header d-flex justify-content-between">
                             <span>Заказ №@order.Id от @order.OrderDate.ToString("dd.MM.yyyy")</span>
-                            <span class="badge bg-@(order.Status == "Paid" ? "success" : "warning")">@order.Status</span>
+                            <span class="badge bg-@(order.Status == "Paid" ? "success" : "warning")">@order.GetStatusDisplay()</span>
                         </div>
                         <div class="card-body">
                             <p><strong>Сумма:</strong> @order.TotalAmount.ToString("C0")</p>

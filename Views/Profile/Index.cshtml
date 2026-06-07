@@ -43,7 +43,7 @@
                     <div class="card text-center h-100">
                         <div class="card-body">
                             <h5>Потрачено всего</h5>
-                            <h2 class="text-success">@ViewBag.TotalSpent.ToString("C0") ₽</h2>
+                            <h2 class="text-success">@ViewBag.TotalSpent.ToString("C0")</h2>
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                             <span class="badge bg-@(order.Status == "Paid" ? "success" : "warning")">@order.Status</span>
                         </div>
                         <div class="card-body">
-                            <p><strong>Сумма:</strong> @order.TotalAmount.ToString("C0") ₽</p>
+                            <p><strong>Сумма:</strong> @order.TotalAmount.ToString("C0")</p>
                             <a asp-controller="Profile" asp-action="OrderDetails" asp-route-id="@order.Id"
                                class="btn btn-sm btn-outline-primary">Подробнее →</a>
                         </div>

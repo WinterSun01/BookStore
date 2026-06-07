@@ -23,9 +23,11 @@
                         <strong>Заказ №@order.Id</strong>
                         от @order.OrderDate.ToString("dd.MM.yyyy HH:mm")
                     </div>
-                    <span class="badge bg-@(order.Status == "Paid" ? "success" : "warning") fs-6">
-                        @order.Status
-                    </span>
+                    <span class="badge bg-@(order.Status == "Paid" ? "success" :
+                                                   order.Status == "Shipped" ? "primary" :
+                                                   order.Status == "AwaitingPayment" ? "warning" : "secondary")">
+                @order.GetStatusDisplay()
+            </span>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -36,13 +38,13 @@
                                 {
                                     <li class="mb-1">
                                         • @item.Book.Title
-                                        <span class="text-muted">(@item.Quantity шт. × @item.PricePerUnit.ToString("C0") ₽)</span>
+                                        <span class="text-muted">(@item.Quantity шт. × @item.PricePerUnit.ToString("C0"))</span>
                                     </li>
                                 }
                             </ul>
                         </div>
                         <div class="col-md-4 text-end">
-                            <h4 class="text-success mb-1">@order.TotalAmount.ToString("C0") ₽</h4>
+                            <h4 class="text-success mb-1">@order.TotalAmount.ToString("C0")</h4>
                             <p class="text-muted small mb-0">
                                 Доставка: @order.ShippingAddress
                             </p>

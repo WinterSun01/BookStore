@@ -8,5 +8,10 @@ namespace BookStore.Controllers
         {
             return View();
         }
+
+        public IActionResult About() => View();
+        public IActionResult Delivery() => View();
+        public IActionResult Returns() => View();
+        public IActionResult FAQ() => View();
     }
 }

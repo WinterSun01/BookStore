@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BookStore.Data;
 using System.Security.Claims;
 using BookStore.Models;
+using BookStore.Data;
 
 namespace BookStore.Controllers
 {

@@ -39,9 +39,9 @@
                     <tr>
                         <td>@item.Book.Title</td>
                         <td>@item.Book.Author?.FullName</td>
-                        <td class="text-end">@item.PricePerUnit.ToString("C0") ₽</td>
+                        <td class="text-end">@item.PricePerUnit.ToString("C0")</td>
                         <td class="text-center">@item.Quantity</td>
-                        <td class="text-end">@((item.Quantity * item.PricePerUnit).ToString("C0")) ₽</td>
+                        <td class="text-end">@((item.Quantity * item.PricePerUnit).ToString("C0"))</td>
                     </tr>
                 }
             </tbody>
@@ -52,13 +52,13 @@
         <div class="card mb-4">
             <div class="card-body text-center">
                 <h4>Общая сумма заказа</h4>
-                <h2 class="text-success">@Model.TotalAmount.ToString("C0") ₽</h2>
+                <h2 class="text-success">@Model.TotalAmount.ToString("C0")</h2>
                 <hr />
                 
                 <h5>
-                    Текущий статус: 
+                    Текущий статус:
                     <span class="badge bg-@(Model.Status == "Paid" ? "success" : "warning")">
-                        @Model.Status
+                        @Model.GetStatusDisplay()
                     </span>
                 </h5>
 

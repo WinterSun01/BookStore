@@ -37,14 +37,14 @@
                         }
                     </td>
                     
-                    <td class="text-success fw-bold">@order.TotalAmount.ToString("C0") ₽</td>
-                    
+                    <td class="text-success fw-bold">@order.TotalAmount.ToString("C0")</td>
+
                     <td>
                         <span class="badge bg-@(order.Status == "Paid" ? "success" :
-                                                    order.Status == "AwaitingPayment" ? "warning" : "secondary")">
-                            @order.Status
-                        </span>
-                    </td>
+                                                              order.Status == "AwaitingPayment" ? "warning" : "secondary")">
+                        @order.GetStatusDisplay()
+                    </span>
+                </td>
                     
                     <td>
                         <a asp-action="Details" asp-route-id="@order.Id" 

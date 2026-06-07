@@ -27,18 +27,21 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
     options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = true;
 })
 .AddRoles<IdentityRole>()
-.AddEntityFrameworkStores<ApplicationDbContext>();
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddErrorDescriber<RussianIdentityErrorDescriber>();
 
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 builder.Services.AddScoped<ICartService, CartService>();
-builder.Services.AddScoped<ApplicationDbContext>();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -50,14 +53,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "account",
-    pattern: "Account/{action=Register}/{id?}",
-    defaults: new { controller = "Account" });
 
 app.MapControllerRoute(
     name: "areas",
@@ -75,7 +72,6 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
-
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 

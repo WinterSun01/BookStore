@@ -23,18 +23,6 @@ namespace BookStore.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required(ErrorMessage = "Email обязателен")]
-            [EmailAddress]
-            public string Email { get; set; } = string.Empty;
-
-            [Required(ErrorMessage = "Пароль обязателен")]
-            [DataType(DataType.Password)]
-            public string Password { get; set; } = string.Empty;
-
-            [DataType(DataType.Password)]
-            [Compare("Password", ErrorMessage = "Пароли не совпадают")]
-            public string ConfirmPassword { get; set; } = string.Empty;
-
             [Required(ErrorMessage = "Имя обязательно")]
             [Display(Name = "Имя")]
             public string FirstName { get; set; } = string.Empty;
@@ -46,13 +34,30 @@ namespace BookStore.Areas.Identity.Pages.Account
             [Display(Name = "Отчество")]
             public string? MiddleName { get; set; }
 
+            [Required(ErrorMessage = "Email обязателен")]
+            [EmailAddress(ErrorMessage = "Некорректный формат email")]
+            [Display(Name = "Электронная почта")]
+            public string Email { get; set; } = string.Empty;
+
             [Display(Name = "Дата рождения")]
             [DataType(DataType.Date)]
             public DateTime? BirthDate { get; set; }
 
-            [Phone]
+            [Phone(ErrorMessage = "Некорректный формат телефона")]
             [Display(Name = "Телефон")]
             public string? Phone { get; set; }
+
+            [Required(ErrorMessage = "Пароль обязателен")]
+            [StringLength(100, ErrorMessage = "Пароль должен содержать минимум {2} символа", MinimumLength = 6)]
+            [DataType(DataType.Password)]
+            [Display(Name = "Пароль")]
+            public string Password { get; set; } = string.Empty;
+
+            [Required(ErrorMessage = "Подтверждение пароля обязательно")]
+            [DataType(DataType.Password)]
+            [Display(Name = "Подтверждение пароля")]
+            [Compare("Password", ErrorMessage = "Пароли не совпадают")]
+            public string ConfirmPassword { get; set; } = string.Empty;
         }
 
         public async Task<IActionResult> OnPostAsync()

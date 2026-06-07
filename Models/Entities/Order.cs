@@ -19,6 +19,19 @@ namespace BookStore.Models.Entities
         public string? ShippingAddress { get; set; }
         public string? PaymentMethod { get; set; } //имитация платежа
 
+        public string GetStatusDisplay()
+        {
+            return Status switch
+            {
+                "Paid" => "Оплачен",
+                "Shipped" => "Отправлен",
+                "Delivered" => "Доставлен",
+                "Cancelled" => "Отменён",
+                "Pending" => "В обработке",
+                "AwaitingPayment" => "Ожидает оплаты",
+                _ => Status
+            };
+        }
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }

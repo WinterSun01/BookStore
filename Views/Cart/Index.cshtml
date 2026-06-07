@@ -39,7 +39,7 @@
                                     <strong>@item.Book.Title</strong>
                                 </td>
                                 <td>@item.Book.Author?.FullName</td>
-                                <td class="text-end">@item.Book.Price.ToString("C0") ₽</td>
+                                <td class="text-end">@item.Book.Price.ToString("C0")</td>
                                 <td class="text-center" style="width: 160px;">
                                     <form asp-action="UpdateQuantity" method="post" class="d-flex align-items-center justify-content-center">
                                         <input type="hidden" name="bookId" value="@item.BookId" />
@@ -55,7 +55,7 @@
                                         </button>
                                     </form>
                                 </td>
-                                <td class="text-end fw-bold">@((item.Quantity * item.Book.Price).ToString("C0")) ₽</td>
+                                <td class="text-end fw-bold">@((item.Quantity * item.Book.Price).ToString("C0"))</td>
                                 <td class="text-center">
                                     <form asp-action="Remove" method="post">
                                         <input type="hidden" name="bookId" value="@item.BookId" />
@@ -72,7 +72,7 @@
                 <div class="card sticky-top" style="top: 20px;">
                     <div class="card-body">
                         <h5 class="card-title">Итого к оплате</h5>
-                        <h3 class="text-success mb-4">@ViewBag.Total.ToString("C0") ₽</h3>
+                        <h3 class="text-success mb-4">@ViewBag.Total.ToString("C0")</h3>
 
                         <a asp-controller="Order" asp-action="Create" class="btn btn-success btn-lg w-100 mb-3">
                             Оформить заказ

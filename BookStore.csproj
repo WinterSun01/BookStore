@@ -12,20 +12,17 @@
   <ItemGroup>
     <Compile Remove="Extensions\**" />
     <Compile Remove="Helpers\**" />
-    <Compile Remove="Models\DTOs\**" />
     <Content Remove="Extensions\**" />
     <Content Remove="Helpers\**" />
-    <Content Remove="Models\DTOs\**" />
     <EmbeddedResource Remove="Extensions\**" />
     <EmbeddedResource Remove="Helpers\**" />
-    <EmbeddedResource Remove="Models\DTOs\**" />
     <None Remove="Extensions\**" />
     <None Remove="Helpers\**" />
-    <None Remove="Models\DTOs\**" />
   </ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+		<PackageReference Include="EPPlus" Version="8.6.1" />
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.26" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.26" />

@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Импорт книг из Excel";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="d-flex align-items-center mb-4">
+                <h2 class="mb-0">
+                    <i class="bi bi-file-earmark-excel text-primary me-2"></i>
+                    Импорт книг из Excel
+                </h2>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Загрузка файла</h5>
+
+                    <div class="alert alert-info py-2 small mb-4">
+                        <strong>Обязательные колонки:</strong>
+                        <code>Title</code>, <code>AuthorName</code><br>
+
+                        <strong>Необязательные колонки:</strong>
+                        <code>Description</code>, <code>Price</code>, <code>Stock</code>,
+                        <code>CategoryName</code>, <code>PublisherName</code>, <code>ImageUrl</code>
+                    </div>
+
+                    <form asp-action="Index" method="post" enctype="multipart/form-data">
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Выберите Excel файл (.xlsx)</label>
+                            <input type="file" name="file" class="form-control" accept=".xlsx" required />
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-upload me-1"></i> Загрузить и импортировать
+                            </button>
+
+                            <a asp-action="DownloadTemplate" class="btn btn-outline-secondary">
+                                <i class="bi bi-download me-1"></i> Скачать шаблон Excel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title mb-3">
+                        <i class="bi bi-info-circle text-info me-1"></i>
+                        Как подготовить файл Excel?
+                    </h6>
+                    <ul class="mb-0 small">
+                        <li>Первая строка должна содержать заголовки колонок</li>
+                        <li>Каждая последующая строка — это одна книга</li>
+                        <li>Колонки <strong>Title</strong> и <strong>AuthorName</strong> — обязательны</li>
+                        <li>Если книга уже существует в базе — она будет пропущена</li>
+                        <li>После скачивания шаблона ты можешь редактировать его и загружать обратно</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

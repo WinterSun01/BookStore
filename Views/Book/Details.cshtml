@@ -1,9 +1,27 @@
 ﻿@model BookStore.Models.Entities.Book
+@using BookStore.Helpers
+
 @{
     ViewData["Title"] = Model.Title;
+    int reviewCount = ViewBag.ReviewCount ?? 0;
 }
 
 <div class="container mt-4">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
     <div class="row">
         <div class="col-md-4 text-center">
             @if (!string.IsNullOrEmpty(Model.ImageUrl))
@@ -21,10 +39,46 @@
         <div class="col-md-8">
             <h1 class="mb-3">@Model.Title</h1>
 
-            <p class="lead">
+            <p class="lead mb-1">
                 <strong>Автор:</strong> @Model.Author?.FullName
             </p>
-            <p>
+
+            @if (reviewCount > 0)
+            {
+                <div class="mb-3 d-flex align-items-center">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= Math.Floor((double)ViewBag.AverageRating))
+                        {
+                            <i class="bi bi-star-fill text-warning fs-5"></i>
+                        }
+                        else if (i - 0.5 <= (double)ViewBag.AverageRating)
+                        {
+                            <i class="bi bi-star-half text-warning fs-5"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-star text-warning fs-5"></i>
+                        }
+                    }
+                    <span class="ms-2 fw-bold fs-5">@ViewBag.AverageRating</span>
+                    <span class="text-muted ms-2">
+                        (@reviewCount @reviewCount.ToDeclension("отзыв", "отзыва", "отзывов"))
+                    </span>
+                </div>
+            }
+            else
+            {
+                <div class="mb-3 text-muted d-flex align-items-center">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <i class="bi bi-star text-warning fs-5"></i>
+                    }
+                    <span class="ms-2">Нет оценок</span>
+                </div>
+            }
+
+            <p class="mb-2">
                 <strong>Категория:</strong> @Model.Category?.Name<br />
                 <strong>Издательство:</strong> @Model.Publisher?.Name
             </p>
@@ -42,18 +96,118 @@
                         🛒 Добавить в корзину
                     </button>
                 </form>
-
                 <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary btn-lg">
                     Перейти в корзину
                 </a>
             </div>
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                @if (ViewBag.IsInFavorites == true)
+                {
+                    <form asp-action="RemoveFromFavorites" method="post" class="mt-3">
+                        <input type="hidden" name="bookId" value="@Model.Id" />
+                        <button type="submit" class="btn btn-outline-danger w-100">
+                            ❤️ Убрать из избранного
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="AddToFavorites" method="post" class="mt-3">
+                        <input type="hidden" name="bookId" value="@Model.Id" />
+                        <button type="submit" class="btn btn-outline-secondary w-100">
+                            ♡ Добавить в избранное
+                        </button>
+                    </form>
+                }
+            }
+            else
+            {
+                <div class="mt-3">
+                    <a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-outline-secondary w-100">
+                        Войдите, чтобы добавить в избранное
+                    </a>
+                </div>
+            }
 
             <h5>Описание книги</h5>
             <p class="lead">@Model.Description</p>
         </div>
     </div>
 
-    <div class="mt-5">
+    <div class="mt-4">
         <a asp-action="Index" class="btn btn-secondary">← Вернуться в каталог</a>
+    </div>
+
+    <div class="mt-5">
+        <h4>Отзывы и оценки</h4>
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Оставить отзыв</h5>
+                    <form asp-controller="Book" asp-action="AddReview" method="post">
+                        <input type="hidden" name="BookId" value="@Model.Id" />
+
+                        <div class="mb-3">
+                            <label class="form-label">Ваша оценка</label>
+                            <select name="Rating" class="form-select" required>
+                                <option value="5">★★★★★ Отлично</option>
+                                <option value="4">★★★★ Хорошо</option>
+                                <option value="3">★★★ Нормально</option>
+                                <option value="2">★★ Плохо</option>
+                                <option value="1">★ Ужасно</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Ваш отзыв</label>
+                            <textarea name="Comment" class="form-control" rows="4"
+                                  placeholder="Напишите, что вы думаете о книге..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Отправить на модерацию</button>
+                        <small class="text-muted d-block mt-2">Отзыв будет опубликован после проверки администратором.</small>
+                    </form>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-secondary">
+                Чтобы оставить отзыв, пожалуйста, <a asp-area="" asp-controller="Account" asp-action="Login">войдите в аккаунт</a>.
+            </div>
+        }
+
+        @if (ViewBag.ApprovedReviews != null && ((List<BookStore.Models.Entities.Review>)ViewBag.ApprovedReviews).Any())
+        {
+            <h5 class="mt-4">Отзывы читателей</h5>
+            @foreach (var review in (List<BookStore.Models.Entities.Review>)ViewBag.ApprovedReviews)
+            {
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>@(!string.IsNullOrEmpty(review.User?.FirstName) ? review.User.FirstName : review.User?.UserName)</strong>
+                                <span class="text-muted ms-2">@review.CreatedAt.ToString("dd.MM.yyyy")</span>
+                            </div>
+                            <div>
+                                @for (int i = 1; i <= review.Rating; i++)
+                                {
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                }
+                            </div>
+                        </div>
+                        <p class="mt-2 mb-0">@review.Comment</p>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-muted mt-3">Пока нет отзывов. Будьте первым!</p>
+        }
     </div>
 </div>

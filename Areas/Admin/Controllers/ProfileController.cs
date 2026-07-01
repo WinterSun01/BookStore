@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BookStore.Data;
+using BookStore.Models;
+using BookStore.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using BookStore.Models;
-using BookStore.Data;
 
 namespace BookStore.Controllers
 {
@@ -11,13 +12,14 @@ namespace BookStore.Controllers
     public class ProfileController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IFavoriteService _favoriteService;
 
-        public ProfileController(ApplicationDbContext context)
+        public ProfileController(ApplicationDbContext context, IFavoriteService favoriteService)
         {
             _context = context;
+            _favoriteService = favoriteService;
         }
 
-        //лич. каб. польз. (данные профиля и ист. заказов)
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -34,6 +36,13 @@ namespace BookStore.Controllers
             ViewBag.TotalOrders = orders.Count;
             ViewBag.TotalSpent = orders.Sum(o => o.TotalAmount);
 
+            int favoritesCount = 0;
+            if (userId != null)
+            {
+                favoritesCount = (await _favoriteService.GetUserFavoritesAsync(userId)).Count;
+            }
+            ViewBag.FavoritesCount = favoritesCount;
+
             var model = new UserProfileViewModel
             {
                 User = user,
@@ -43,7 +52,6 @@ namespace BookStore.Controllers
             return View(model);
         }
 
-        //дет. инф. о конкр. заказе польз.
         public async Task<IActionResult> OrderDetails(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -59,7 +67,6 @@ namespace BookStore.Controllers
             return View(order);
         }
 
-        //редакт. лич. данных польз.
         public async Task<IActionResult> Edit()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -79,7 +86,6 @@ namespace BookStore.Controllers
             return View(model);
         }
 
-        //сохр. измен. профиля
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditProfileViewModel model)

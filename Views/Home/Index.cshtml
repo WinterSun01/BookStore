@@ -61,6 +61,38 @@
                     <div class="card-body d-flex flex-column">
                         <h6 class="card-title">@book.Title</h6>
                         <p class="card-text text-muted small">@book.Author?.FullName</p>
+
+                        <div class="mb-2 d-flex align-items-center" style="min-height: 20px;">
+                            @{
+                                var rating = 0.0;
+                                if (ViewBag.BookRatings != null && ViewBag.BookRatings.ContainsKey(book.Id))
+                                {
+                                    rating = (double)ViewBag.BookRatings[book.Id];
+                                }
+                            }
+
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (rating >= i)
+                                {
+                                    <i class="bi bi-star-fill text-warning" style="font-size: 0.9rem;"></i>
+                                }
+                                else if (rating >= i - 0.5)
+                                {
+                                    <i class="bi bi-star-half text-warning" style="font-size: 0.9rem;"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-star text-warning" style="font-size: 0.9rem;"></i>
+                                }
+                            }
+
+                            @if (rating > 0)
+                            {
+                                <span class="ms-2 fw-bold small">@rating.ToString("0.0")</span>
+                            }
+                        </div>
+
                         <p class="mt-auto text-success fw-bold">@book.Price.ToString("#,0") ₽</p>
                         <a asp-controller="Book" asp-action="Details" asp-route-id="@book.Id"
                            class="btn btn-outline-primary btn-sm mt-2">Подробнее</a>

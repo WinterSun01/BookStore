@@ -1,0 +1,45 @@
+﻿@model List<BookStore.Models.Entities.Book>
+
+@{
+    ViewData["Title"] = "Избранное";
+}
+
+<h2 class="mb-4">❤️ Мои избранные книги</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        У вас пока нет книг в избранном.
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var book in Model)
+        {
+            <div class="col-md-4 col-lg-3 mb-4">
+                <div class="card h-100 shadow-sm">
+                    @if (!string.IsNullOrEmpty(book.ImageUrl))
+                    {
+                        <img src="@book.ImageUrl" class="card-img-top" style="height: 220px; object-fit: contain;" alt="@book.Title">
+                    }
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@book.Title</h5>
+                        <p class="card-text text-muted">@book.Author?.FullName</p>
+                        <p class="text-success fw-bold mt-auto">@book.Price.ToString("#,0") ₽</p>
+
+                        <div class="d-flex gap-2 mt-2">
+                            <a asp-controller="Book" asp-action="Details" asp-route-id="@book.Id"
+                               class="btn btn-outline-primary flex-fill btn-sm">Подробнее</a>
+
+                            <form asp-controller="Book" asp-action="RemoveFromFavorites" method="post">
+                                <input type="hidden" name="bookId" value="@book.Id" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Удалить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

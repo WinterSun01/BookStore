@@ -11,13 +11,9 @@
 
   <ItemGroup>
     <Compile Remove="Extensions\**" />
-    <Compile Remove="Helpers\**" />
     <Content Remove="Extensions\**" />
-    <Content Remove="Helpers\**" />
     <EmbeddedResource Remove="Extensions\**" />
-    <EmbeddedResource Remove="Helpers\**" />
     <None Remove="Extensions\**" />
-    <None Remove="Helpers\**" />
   </ItemGroup>
 
 	<ItemGroup>

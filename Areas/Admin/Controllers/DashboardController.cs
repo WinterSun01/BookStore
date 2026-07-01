@@ -11,22 +11,28 @@ namespace BookStore.Areas.Admin.Controllers
     public class DashboardController : Controller
     {
         private readonly IBookService _bookService;
+        private readonly IReviewService _reviewService;
         private readonly ApplicationDbContext _context;
 
-        public DashboardController(IBookService bookService, ApplicationDbContext context)
+        public DashboardController(
+            IBookService bookService,
+            IReviewService reviewService,
+            ApplicationDbContext context)
         {
             _bookService = bookService;
+            _reviewService = reviewService;
             _context = context;
         }
 
-        //глав. стр. админ. панели
         public async Task<IActionResult> Index()
         {
-            //сбор статистики для отобр. на дашборде
             ViewBag.TotalBooks = await _context.Books.CountAsync();
             ViewBag.TotalAuthors = await _context.Authors.CountAsync();
             ViewBag.TotalCategories = await _context.Categories.CountAsync();
             ViewBag.TotalPublishers = await _context.Publishers.CountAsync();
+
+            var pendingReviews = await _reviewService.GetPendingReviewsAsync();
+            ViewBag.PendingReviewsCount = pendingReviews.Count;
 
             return View();
         }

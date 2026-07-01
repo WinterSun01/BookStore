@@ -49,6 +49,22 @@
                 </div>
             </div>
 
+            <div class="col-md-4">
+                <div class="card text-center h-100 border-danger">
+                    <div class="card-body">
+                        <h5>Избранное</h5>
+                        <h2 class="text-danger">
+                            @ViewBag.FavoritesCount
+                        </h2>
+                        <a asp-controller="Favorites" asp-action="Index"
+                           class="btn btn-outline-danger btn-sm mt-2">
+                            Перейти в избранное →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
             <h4 class="mb-3">📦 История заказов</h4>
 
             @if (!Model.Orders.Any())

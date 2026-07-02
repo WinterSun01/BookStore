@@ -30,6 +30,7 @@ namespace BookStore.Areas.Admin.Controllers
             ViewBag.TotalAuthors = await _context.Authors.CountAsync();
             ViewBag.TotalCategories = await _context.Categories.CountAsync();
             ViewBag.TotalPublishers = await _context.Publishers.CountAsync();
+            ViewBag.TotalArticles = await _context.Articles.CountAsync();
 
             var pendingReviews = await _reviewService.GetPendingReviewsAsync();
             ViewBag.PendingReviewsCount = pendingReviews.Count;

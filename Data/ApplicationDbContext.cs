@@ -30,10 +30,16 @@ namespace BookStore.Data
 
         public DbSet<Favorite> Favorites { get; set; }
 
+        public DbSet<Article> Articles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+            builder.Entity<Article>()
+                .HasMany(a => a.Books)
+                .WithMany(b => b.Articles)
+                .UsingEntity(j => j.ToTable("ArticleBooks"));
         }
     }
 }

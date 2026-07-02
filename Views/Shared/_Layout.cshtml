@@ -30,6 +30,10 @@
                         </li>
 
                         <li class="nav-item">
+                            <a class="nav-link" asp-controller="Blog" asp-action="Index">📇 Блог</a>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link d-flex align-items-center" asp-controller="Favorites" asp-action="Index">
                                 ❤️ Избранное
                                 @await Component.InvokeAsync("FavoritesCount")

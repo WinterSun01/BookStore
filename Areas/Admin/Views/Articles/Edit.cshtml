@@ -1,0 +1,94 @@
+﻿@model BookStore.Models.Entities.Article
+
+@{
+    ViewData["Title"] = "Редактировать статью";
+    var books = ViewBag.Books as List<BookStore.Models.Entities.Book> ?? new List<BookStore.Models.Entities.Book>();
+    var selectedBookIds = Model.Books?.Select(b => b.Id).ToList() ?? new List<int>();
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="mb-4">
+    <i class="bi bi-pencil-square text-primary"></i> Редактировать статью
+</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="row">
+        <!-- Левая колонка -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Заголовок статьи *</label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Краткое описание</label>
+                        <textarea asp-for="ShortDescription" class="form-control" rows="2"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Содержание статьи *</label>
+                        <textarea asp-for="Content" class="form-control" rows="14"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Изображение (URL)</label>
+                        <input asp-for="ImageUrl" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Дата публикации</label>
+                        <input asp-for="PublishedAt" class="form-control" type="datetime-local" />
+                    </div>
+
+                    <div class="form-check form-switch mb-3">
+                        <input asp-for="IsPublished" class="form-check-input" role="switch">
+                        <label class="form-check-label">Опубликовано</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0">Связанные книги</h6>
+                </div>
+                <div class="card-body">
+                    @if (books.Any())
+                    {
+                        <select name="selectedBooks" class="form-select" multiple size="10">
+                            @foreach (var book in books)
+                            {
+                                var isSelected = selectedBookIds.Contains(book.Id);
+                                <option value="@book.Id" selected="@isSelected">@book.Title</option>
+                            }
+                        </select>
+                        <small class="text-muted d-block mt-2">
+                            Можно выбрать несколько книг
+                        </small>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">В базе пока нет книг.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary px-4">
+            <i class="bi bi-check-lg"></i> Сохранить изменения
+        </button>
+        <a asp-action="Index" class="btn btn-outline-secondary ms-2">Отмена</a>
+    </div>
+</form>

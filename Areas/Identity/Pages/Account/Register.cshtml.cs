@@ -27,9 +27,8 @@ namespace BookStore.Areas.Identity.Pages.Account
             [Display(Name = "Имя")]
             public string FirstName { get; set; } = string.Empty;
 
-            [Required(ErrorMessage = "Фамилия обязательна")]
             [Display(Name = "Фамилия")]
-            public string LastName { get; set; } = string.Empty;
+            public string? LastName { get; set; }
 
             [Display(Name = "Отчество")]
             public string? MiddleName { get; set; }
@@ -48,9 +47,11 @@ namespace BookStore.Areas.Identity.Pages.Account
             public string? Phone { get; set; }
 
             [Required(ErrorMessage = "Пароль обязателен")]
-            [StringLength(100, ErrorMessage = "Пароль должен содержать минимум {2} символа", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Пароль должен содержать минимум {2} символов", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Пароль")]
+            [RegularExpression(@"^(?=.*[!@#$%^&*()_+\-=\[\]{};':""\\|,.<>\/?]).+$",
+            ErrorMessage = "Пароль должен содержать хотя бы один специальный символ (например: !@#$%).")]
             public string Password { get; set; } = string.Empty;
 
             [Required(ErrorMessage = "Подтверждение пароля обязательно")]

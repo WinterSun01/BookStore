@@ -16,19 +16,24 @@ namespace BookStore.Controllers
             _signInManager = signInManager;
         }
 
-        //форма регист.
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
-        //отправка формы регистр.
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var existingUser = await _userManager.FindByEmailAsync(model.Email);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("", "Пользователь с такой электронной почтой уже зарегистрирован.");
+                    return View(model);
+                }
+
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,

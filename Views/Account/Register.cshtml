@@ -23,7 +23,6 @@
                             <div class="col-md-6 mb-3">
                                 <label asp-for="LastName" class="form-label"></label>
                                 <input asp-for="LastName" class="form-control" />
-                                <span asp-validation-for="LastName" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -51,14 +50,25 @@
 
                         <div class="mb-3">
                             <label asp-for="Password" class="form-label"></label>
-                            <input asp-for="Password" class="form-control" type="password" />
+                            <input asp-for="Password" class="form-control" type="password" id="passwordInput" />
                             <span asp-validation-for="Password" class="text-danger"></span>
+                            <div class="form-text mt-2 small">
+                                <strong class="text-muted">Пароль должен содержать:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li id="req-length" class="text-muted">минимум 6 символов</li>
+                                    <li id="req-lower" class="text-muted">хотя бы одну строчную букву (a-z)</li>
+                                    <li id="req-upper" class="text-muted">хотя бы одну заглавную букву (A-Z)</li>
+                                    <li id="req-digit" class="text-muted">хотя бы одну цифру (0-9)</li>
+                                    <li id="req-special" class="text-muted">хотя бы один специальный символ (!@@#$% и т.д.)</li>
+                                </ul>
+                            </div>
                         </div>
 
                         <div class="mb-4">
                             <label asp-for="ConfirmPassword" class="form-label"></label>
-                            <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                            <input asp-for="ConfirmPassword" class="form-control" type="password" id="confirmPasswordInput" />
                             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            <div id="matchMessage" class="form-text mt-1 small"></div>
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-lg w-100">Зарегистрироваться</button>
@@ -72,3 +82,56 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        const passwordInput = document.getElementById('passwordInput');
+        const confirmInput = document.getElementById('confirmPasswordInput');
+        const matchMessage = document.getElementById('matchMessage');
+
+        function checkPassword() {
+            const value = passwordInput.value;
+
+            const checks = [
+                { ok: value.length >= 6, id: 'req-length', text: 'минимум 6 символов' },
+                { ok: /[a-z]/.test(value), id: 'req-lower', text: 'хотя бы одну строчную букву (a-z)' },
+                { ok: /[A-Z]/.test(value), id: 'req-upper', text: 'хотя бы одну заглавную букву (A-Z)' },
+                { ok: /[0-9]/.test(value), id: 'req-digit', text: 'хотя бы одну цифру (0-9)' },
+                { ok: /[^a-zA-Z0-9]/.test(value), id: 'req-special', text: 'хотя бы один специальный символ (!@@#$% и т.д.)' }
+            ];
+
+            checks.forEach(check => {
+                const item = document.getElementById(check.id);
+                item.classList.toggle('text-success', check.ok);
+                item.classList.toggle('text-muted', !check.ok);
+                item.innerHTML = (check.ok ? '✅ ' : '') + check.text;
+            });
+        }
+
+        function checkMatch() {
+            const password = passwordInput.value;
+            const confirm = confirmInput.value;
+
+            if (confirm.length === 0) {
+                matchMessage.innerHTML = '';
+                return;
+            }
+
+            if (password === confirm) {
+                matchMessage.innerHTML = '✅ Пароли совпадают';
+                matchMessage.classList.add('text-success');
+                matchMessage.classList.remove('text-danger');
+            } else {
+                matchMessage.innerHTML = '❌ Пароли не совпадают';
+                matchMessage.classList.add('text-danger');
+                matchMessage.classList.remove('text-success');
+            }
+        }
+
+        passwordInput.addEventListener('input', function () {
+            checkPassword();
+            checkMatch();
+        });
+        confirmInput.addEventListener('input', checkMatch);
+    </script>
+}

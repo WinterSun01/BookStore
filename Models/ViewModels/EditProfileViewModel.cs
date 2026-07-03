@@ -8,9 +8,8 @@ namespace BookStore.Models
         [Display(Name = "Имя")]
         public string FirstName { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Фамилия обязательна")]
         [Display(Name = "Фамилия")]
-        public string LastName { get; set; } = string.Empty;
+        public string? LastName { get; set; }
 
         [Display(Name = "Отчество")]
         public string? MiddleName { get; set; }

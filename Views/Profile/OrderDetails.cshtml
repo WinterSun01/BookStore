@@ -1,0 +1,76 @@
+﻿@model BookStore.Models.Entities.Order
+
+@{
+    ViewData["Title"] = $"Заказ №{@Model.Id}";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Заказ №@Model.Id</h2>
+        <a asp-action="Index" class="btn btn-outline-secondary">← Назад к заказам</a>
+    </div>
+
+    <div class="row">
+        <!-- Информация о заказе -->
+        <div class="col-md-5">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Информация о заказе</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Дата оформления:</strong> @Model.OrderDate.ToString("dd.MM.yyyy HH:mm")</p>
+                    <p>
+                        <strong>Статус:</strong>
+                        <span class="badge bg-@(Model.Status == "Paid" ? "success" : Model.Status == "Shipped" ? "info" : "secondary")">
+                            @Model.GetStatusDisplay()
+                        </span>
+                    </p>
+                    <p><strong>Сумма заказа:</strong> <span class="fw-bold">@Model.TotalAmount.ToString("#,0") ₽</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Состав заказа -->
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Состав заказа</h5>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Книга</th>
+                                <th class="text-center">Кол-во</th>
+                                <th class="text-end">Цена</th>
+                                <th class="text-end">Сумма</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderItems)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@item.Book?.Title</strong><br>
+                                        <small class="text-muted">@item.Book?.Author?.FullName</small>
+                                    </td>
+                                    <td class="text-center align-middle">@item.Quantity</td>
+                                    <td class="text-end align-middle">@item.Book?.Price.ToString("#,0") ₽</td>
+                                    <td class="text-end align-middle fw-bold">
+                                        @((item.Book?.Price * item.Quantity ?? 0).ToString("#,0")) ₽
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot class="table-light">
+                            <tr>
+                                <td colspan="3" class="text-end fw-bold">Итого:</td>
+                                <td class="text-end fw-bold fs-5">@Model.TotalAmount.ToString("#,0") ₽</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

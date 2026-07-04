@@ -17,7 +17,7 @@ namespace BookStore.Models.Entities
         public string Status { get; set; } = "Pending";
 
         public string? ShippingAddress { get; set; }
-        public string? PaymentMethod { get; set; } //имитация платежа
+        public string? PaymentMethod { get; set; }
 
         public string GetStatusDisplay()
         {

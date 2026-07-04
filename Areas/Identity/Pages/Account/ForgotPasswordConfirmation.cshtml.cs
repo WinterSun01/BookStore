@@ -4,6 +4,8 @@ namespace BookStore.Areas.Identity.Pages.Account
 {
     public class ForgotPasswordConfirmationModel : PageModel
     {
-        public void OnGet() { }
+        public void OnGet()
+        {
+        }
     }
 }

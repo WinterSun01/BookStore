@@ -38,7 +38,6 @@ namespace BookStore.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                //пров. на дубликат автора по имени (регистронезависимо)
                 var exists = await _context.Authors
                     .AnyAsync(a => a.FullName.ToLower() == author.FullName.ToLower());
 
@@ -56,6 +55,25 @@ namespace BookStore.Areas.Admin.Controllers
             }
 
             return View(author);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateFromModal(string fullName)
+        {
+            if (string.IsNullOrWhiteSpace(fullName))
+                return Json(new { success = false, message = "Имя автора не может быть пустым" });
+
+            var exists = await _context.Authors
+                .AnyAsync(a => a.FullName.ToLower() == fullName.Trim().ToLower());
+
+            if (exists)
+                return Json(new { success = false, message = "Автор с таким именем уже существует" });
+
+            var author = new Author { FullName = fullName.Trim() };
+            _context.Authors.Add(author);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, authorId = author.Id, fullName = author.FullName });
         }
 
         //форма ред. автора

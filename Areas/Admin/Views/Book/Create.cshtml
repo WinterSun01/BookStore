@@ -161,9 +161,12 @@
 
 @section Scripts {
     <script>
-        async function addNewAuthor() {
+                async function addNewAuthor() {
             const name = document.getElementById('newAuthorName').value.trim();
-            if (!name) { alert('Введите имя автора'); return; }
+            if (!name) {
+                alert('Введите имя автора');
+                return;
+            }
 
             const response = await fetch('/Admin/Book/AddAuthor', {
                 method: 'POST',
@@ -177,10 +180,12 @@
                 const option = new Option(data.fullName, data.id);
                 select.add(option);
                 select.value = data.id;
+
                 bootstrap.Modal.getInstance(document.getElementById('addAuthorModal')).hide();
                 document.getElementById('newAuthorName').value = '';
             } else {
-                alert('Ошибка при добавлении автора');
+                const error = await response.json();
+                alert(error.message || 'Ошибка при добавлении автора');
             }
         }
 

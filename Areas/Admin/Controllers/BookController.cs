@@ -159,7 +159,13 @@ namespace BookStore.Areas.Admin.Controllers
         public async Task<IActionResult> AddAuthor([FromBody] AddAuthorDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.FullName))
-                return BadRequest();
+                return BadRequest(new { message = "Имя автора не может быть пустым" });
+
+            var exists = await _context.Authors
+                .AnyAsync(a => a.FullName.ToLower() == dto.FullName.Trim().ToLower());
+
+            if (exists)
+                return BadRequest(new { message = "Автор с таким именем уже существует" });
 
             var author = new Author { FullName = dto.FullName.Trim() };
             _context.Authors.Add(author);
@@ -172,7 +178,13 @@ namespace BookStore.Areas.Admin.Controllers
         public async Task<IActionResult> AddCategory([FromBody] AddCategoryDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Name))
-                return BadRequest();
+                return BadRequest(new { message = "Название категории не может быть пустым" });
+
+            var exists = await _context.Categories
+                .AnyAsync(c => c.Name.ToLower() == dto.Name.Trim().ToLower());
+
+            if (exists)
+                return BadRequest(new { message = "Категория с таким названием уже существует" });
 
             var category = new Category { Name = dto.Name.Trim() };
             _context.Categories.Add(category);
@@ -185,7 +197,13 @@ namespace BookStore.Areas.Admin.Controllers
         public async Task<IActionResult> AddPublisher([FromBody] AddPublisherDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Name))
-                return BadRequest();
+                return BadRequest(new { message = "Название издательства не может быть пустым" });
+
+            var exists = await _context.Publishers
+                .AnyAsync(p => p.Name.ToLower() == dto.Name.Trim().ToLower());
+
+            if (exists)
+                return BadRequest(new { message = "Издательство с таким названием уже существует" });
 
             var publisher = new Publisher { Name = dto.Name.Trim() };
             _context.Publishers.Add(publisher);

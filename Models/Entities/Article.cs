@@ -13,12 +13,12 @@ public class Article
     [MaxLength(300)]
     public string? ShortDescription { get; set; }
 
-    public string Content { get; set; } = string.Empty; // HTML-контент
+    public string Content { get; set; } = string.Empty;
 
     public string? ImageUrl { get; set; }
 
     [MaxLength(200)]
-    public string Slug { get; set; } = string.Empty; // для красивых URL
+    public string Slug { get; set; } = string.Empty;
 
     public DateTime PublishedAt { get; set; } = DateTime.UtcNow;
     public bool IsPublished { get; set; } = true;

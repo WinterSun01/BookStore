@@ -47,7 +47,8 @@
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Дата публикации</label>
-                        <input asp-for="PublishedAt" class="form-control" type="datetime-local" />
+                        <input asp-for="PublishedAt" class="form-control" type="datetime-local"
+                               value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
                     </div>
 
                     <div class="form-check form-switch mb-3">

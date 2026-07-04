@@ -39,6 +39,8 @@ public class ArticlesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Article article, int[] selectedBooks)
     {
+        ModelState.Remove(nameof(Article.Slug));
+
         if (ModelState.IsValid)
         {
             if (selectedBooks != null && selectedBooks.Any())
@@ -78,6 +80,8 @@ public class ArticlesController : Controller
     public async Task<IActionResult> Edit(int id, Article article, int[] selectedBooks)
     {
         if (id != article.Id) return NotFound();
+
+        ModelState.Remove(nameof(Article.Slug));
 
         if (ModelState.IsValid)
         {
